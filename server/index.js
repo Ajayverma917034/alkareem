@@ -9,6 +9,7 @@ import fileUploader from "express-fileupload";
 
 // Routes
 import ErrorHandler from "./middleware/Errors.js";
+
 import UserRouter from './routes/user.route.js'
 import AdminRouter from './routes/admin.route.js'
 import WebRouter from './routes/web.routes.js'
