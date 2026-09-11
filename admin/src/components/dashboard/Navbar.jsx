@@ -1,11 +1,14 @@
 import { useRef, useState, useEffect } from "react";
-import { Menu, ChevronDown, LogOut, User } from "lucide-react";
+import { Menu, ChevronDown, LogOut, User, KeyRound } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import ChangePasswordModal from "../../common/ChangePasswordModal";
 
 export const Navbar = ({ onMenuClick }) => {
     const { user, logout } = useAuth();
     const [open, setOpen] = useState(false);
+    const [showPasswordModal, setShowPasswordModal] = useState(false);
     const dropRef = useRef(null);
+
 
     const name = user?.name?.name || "User";
     const email = user?.email || "";
@@ -74,10 +77,16 @@ export const Navbar = ({ onMenuClick }) => {
 
                         {/* Actions */}
                         <div className="p-1.5">
-                            {/* <button className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-slate-600 hover:bg-slate-50 transition-colors text-left">
-                                <User size={14} className="text-slate-400" />
-                                Profile
-                            </button> */}
+                            <button
+                                onClick={() => {
+                                    setOpen(false);
+                                    setShowPasswordModal(true);
+                                }}
+                                className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-slate-600 hover:bg-slate-50 transition-colors text-left"
+                            >
+                                <KeyRound size={14} className="text-slate-400" />
+                                Change Password
+                            </button>
                             <button
                                 onClick={handleLogout}
                                 className="w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-[13px] text-red-500 hover:bg-red-50 transition-colors text-left"
@@ -89,6 +98,10 @@ export const Navbar = ({ onMenuClick }) => {
                     </div>
                 )}
             </div>
+            <ChangePasswordModal
+                open={showPasswordModal}
+                onClose={() => setShowPasswordModal(false)}
+            />
         </header>
     );
 };

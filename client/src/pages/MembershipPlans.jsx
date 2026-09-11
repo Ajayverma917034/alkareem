@@ -2,7 +2,37 @@ import { useState, useEffect } from "react";
 import api from "../api/axiosInstance";
 import { toast } from "sonner";
 import { getErrorMessage } from "../utils";
-import { Bell, Gift, Info, Lock, ShieldCheck } from "lucide-react";
+import {
+    Bell,
+    Gift,
+    Info,
+    Lock,
+    ShieldCheck,
+    Check,
+    Calendar,
+    Loader2,
+    Crown,
+    ChevronDown,
+    CreditCard,
+    Landmark,
+    Smartphone,
+    Wallet,
+    BadgeCheck,
+    ShieldAlert,
+    RotateCcw,
+    CalendarX,
+    Sparkles,
+    Users,
+    Target,
+    Award,
+    HeartHandshake,
+    UserPlus,
+    Rocket,
+    Quote,
+    TrendingUp,
+    Newspaper,
+    Percent,
+} from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { Navigate } from "react-router-dom";
 
@@ -16,22 +46,6 @@ function loadRazorpay() {
         document.body.appendChild(script);
     });
 }
-
-const CheckIcon = ({ color }) => (
-    <svg width="18" height="18" viewBox="0 0 20 20" fill="none" className="mt-0.5 flex-shrink-0">
-        <circle cx="10" cy="10" r="10" fill={color} opacity="0.18" />
-        <path d="M6 10l2.5 2.5L14 7" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-);
-
-const CalendarIcon = () => (
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-gray-400 flex-shrink-0">
-        <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-        <line x1="16" y1="2" x2="16" y2="6" />
-        <line x1="8" y1="2" x2="8" y2="6" />
-        <line x1="3" y1="10" x2="21" y2="10" />
-    </svg>
-);
 
 /* ── Keyframe animations (minimal inline styles needed for dynamic values only) ── */
 const GlobalStyles = () => (
@@ -52,6 +66,10 @@ const GlobalStyles = () => (
             0%,100% { transform:translateY(0)     scale(1);    }
             50%     { transform:translateY(-16px) scale(1.03); }
         }
+        @keyframes _accordionIn {
+            from { opacity:0; transform:translateY(-4px); }
+            to   { opacity:1; transform:translateY(0); }
+        }
         .shimmer-always::after,
         .shimmer-hover::after {
             content:''; position:absolute; inset:0 auto 0 0;
@@ -68,17 +86,20 @@ const GlobalStyles = () => (
         .d-400 { animation-delay:.40s; }
         .d-500 { animation-delay:.50s; }
         .d-600 { animation-delay:.60s; }
+        .d-700 { animation-delay:.70s; }
+        .d-800 { animation-delay:.80s; }
         .pulse-dot { animation:_pulseDot 2s infinite; }
         .blob  { animation:_blobFloat  9s ease-in-out infinite; }
         .blob2 { animation:_blobFloat 11s ease-in-out infinite 2s; }
         .plans-scroll { scrollbar-width:thin; scrollbar-color:#d1d5db transparent; }
         .plans-scroll::-webkit-scrollbar { height:4px; }
         .plans-scroll::-webkit-scrollbar-thumb { background:#d1d5db; border-radius:9px; }
+        .faq-answer { animation:_accordionIn .2s ease-out both; }
     `}</style>
 );
 
 /* ─────────────────────────────────────────
-   PlanCard — logic & visuals untouched
+   PlanCard
 ───────────────────────────────────────── */
 function PlanCard({ plan, onSubscribe, isLoading, activePlanId }) {
     const isActive = activePlanId === plan._id;
@@ -89,13 +110,14 @@ function PlanCard({ plan, onSubscribe, isLoading, activePlanId }) {
     return (
         <div className="relative h-full w-full group">
             <div
-                className="relative h-full flex flex-col bg-white rounded-2xl p-6 py-8 overflow-hidden transition-all duration-300 min-h-[420px]"
+                className="relative h-full flex flex-col bg-white rounded-2xl p-6 py-8 overflow-hidden transition-all duration-300 min-h-[440px] hover:shadow-xl"
                 style={{
                     border: `2px solid ${plan.isMostPopular ? "#fb2c36" : "#e5e7eb"}`,
-                    boxShadow: "0 2px 12px rgba(0,0,0,.07)",
+                    boxShadow: plan.isMostPopular
+                        ? "0 8px 24px rgba(251,44,54,.12)"
+                        : "0 2px 12px rgba(0,0,0,.07)",
                 }}
             >
-                {/* Corner ribbon */}
                 {plan.badge && !plan.isMostPopular && (
                     <div className="absolute top-[22px] -left-[30px] w-[150px] bg-green-500 text-white text-[11px] font-bold text-center py-[5px] -rotate-45 shadow-sm tracking-wider z-10">
                         {plan.badge}
@@ -120,7 +142,7 @@ function PlanCard({ plan, onSubscribe, isLoading, activePlanId }) {
 
                 {plan.annualEquivalent && (
                     <div className="flex items-center justify-center gap-1.5 mt-1.5 mb-2">
-                        <CalendarIcon />
+                        <Calendar size={13} className="text-gray-400 flex-shrink-0" />
                         <span className="text-sm text-gray-500">₹ {plan.annualEquivalent}/year</span>
                     </div>
                 )}
@@ -132,7 +154,12 @@ function PlanCard({ plan, onSubscribe, isLoading, activePlanId }) {
                     <ul className="space-y-2.5">
                         {plan.features.map((f, i) => (
                             <li key={i} className="flex items-start gap-2">
-                                <CheckIcon color={accent} />
+                                <span
+                                    className="mt-0.5 flex-shrink-0 rounded-full p-0.5"
+                                    style={{ backgroundColor: `${accent}22` }}
+                                >
+                                    <Check size={13} style={{ color: accent }} strokeWidth={3} />
+                                </span>
                                 <span className="text-sm text-gray-700 leading-snug">{f}</span>
                             </li>
                         ))}
@@ -150,26 +177,17 @@ function PlanCard({ plan, onSubscribe, isLoading, activePlanId }) {
                 >
                     {busy ? (
                         <span className="flex items-center justify-center gap-2">
-                            <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                            </svg>
+                            <Loader2 size={18} className="animate-spin" />
                             Processing...
                         </span>
                     ) : isActive ? (
                         <span className="flex items-center justify-center gap-2">
-                            <svg width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
-                                <path d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z" />
-                            </svg>
+                            <BadgeCheck size={18} />
                             Current Plan
                         </span>
                     ) : (
                         <span className="flex items-center justify-center gap-2">
-                            {plan.isMostPopular && (
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                                    <path d="M2 19h20v2H2v-2zM2 5l5 3 5-5 5 5 5-3-2 9H4L2 5zm10-1.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z" />
-                                </svg>
-                            )}
+                            {plan.isMostPopular && <Crown size={16} />}
                             Subscribe Now
                         </span>
                     )}
@@ -181,40 +199,77 @@ function PlanCard({ plan, onSubscribe, isLoading, activePlanId }) {
 
 /* ── Static data ── */
 const faqItems = [
-    { icon: <Lock size={16} />, q: "Can I cancel my membership anytime?", a: "Yes, you can cancel at any time. For monthly and quarterly plans, cancellation takes effect from the next billing cycle." },
-    { icon: <Info size={16} />, q: "Are there any hidden charges?", a: "No, all prices are fully inclusive of taxes. There are absolutely no hidden charges or additional fees." },
-    { icon: <Gift size={16} />, q: "How do I receive my membership benefits?", a: "Once subscribed, you'll get a welcome email with instructions to access all member benefits within 24 hours." },
-    { icon: <ShieldCheck size={16} />, q: "Is my payment secure?", a: "Absolutely. We use 256-bit SSL encryption and trusted payment gateways to fully protect your financial data." },
+    { icon: Lock, q: "Can I cancel my membership anytime?", a: "Yes, you can cancel at any time from your account settings. For monthly and quarterly plans, cancellation takes effect from the next billing cycle, so you keep access until the period you've already paid for ends." },
+    { icon: Info, q: "Are there any hidden charges?", a: "No. All prices shown are fully inclusive of taxes. There are no setup fees, processing fees, or surprise charges added at checkout — the price you see is the price you pay." },
+    { icon: Gift, q: "How do I receive my membership benefits?", a: "Once your payment is confirmed, you'll get a welcome email within 24 hours with instructions to access programs, events, and your member dashboard." },
+    { icon: ShieldCheck, q: "Is my payment secure?", a: "Absolutely. All transactions run through Razorpay with 256-bit SSL encryption, and we never store your card or bank details on our servers." },
+    { icon: RotateCcw, q: "Can I upgrade or downgrade my plan later?", a: "Yes. You can switch tiers at any time from your account. If you upgrade mid-cycle, we'll prorate the difference; downgrades take effect at your next renewal." },
+    { icon: Landmark, q: "Will I get a receipt for tax exemption?", a: "Yes. Every contribution generates an 80G-eligible receipt, sent to your registered email and always available for download from your dashboard." },
+    { icon: ShieldAlert, q: "What happens if a payment fails?", a: "If a renewal payment fails, we'll notify you by email and SMS and retry automatically for a few days before your membership lapses — so you won't lose access without warning." },
 ];
 
 const trustItems = [
-    {
-        icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" /><path d="M7 11V7a5 5 0 0 1 10 0v4" /></svg>,
-        label: "Secure Payment", color: "#6366f1", bg: "#eef2ff",
-    },
-    {
-        icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" /></svg>,
-        label: "256-bit SSL", color: "#059669", bg: "#ecfdf5",
-    },
-    {
-        icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="20 6 9 17 4 12" /></svg>,
-        label: "No Risk Guarantee", color: "#d97706", bg: "#fffbeb",
-    },
-    {
-        icon: <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>,
-        label: "Cancel Anytime", color: "#dc2626", bg: "#fef2f2",
-    },
+    { icon: ShieldCheck, label: "Secure Payment", color: "#6366f1", bg: "#eef2ff" },
+    { icon: Lock, label: "256-bit SSL", color: "#059669", bg: "#ecfdf5" },
+    { icon: ShieldAlert, label: "No Risk Guarantee", color: "#d97706", bg: "#fffbeb" },
+    { icon: RotateCcw, label: "Cancel Anytime", color: "#dc2626", bg: "#fef2f2" },
 ];
 
-const featurePills = [
-    { icon: "✦", label: "Access to all NGO programs" },
-    { icon: "⚡", label: "Priority event registration" },
-    { icon: "📋", label: "Monthly impact newsletter" },
-    { icon: "🤝", label: "Exclusive volunteer opportunities" },
-    { icon: "🏅", label: "Certificate of membership" },
-    { icon: "💰", label: "Tax exemption benefits" },
+const paymentMethods = [
+    { icon: CreditCard, label: "Credit Card" },
+    { icon: Wallet, label: "Debit Card" },
+    { icon: Landmark, label: "Net Banking" },
+    { icon: Smartphone, label: "UPI" },
 ];
 
+const membershipBenefits = [
+    { icon: Target, title: "Access to all NGO programs", desc: "Full access to every ongoing initiative and program we run, no exceptions." },
+    { icon: Sparkles, title: "Priority event registration", desc: "First access and reserved seats whenever we open registration for events." },
+    { icon: Newspaper, title: "Monthly impact newsletter", desc: "A monthly digest showing exactly where your contribution went and what it funded." },
+    { icon: HeartHandshake, title: "Exclusive volunteer opportunities", desc: "Hands-on volunteering slots reserved specifically for members." },
+    { icon: Award, title: "Certificate of membership", desc: "An official certificate recognizing you as a supporting member." },
+    { icon: Percent, title: "Tax exemption benefits", desc: "80G-eligible receipts issued automatically for every contribution you make." },
+];
+
+const impactStats = [
+    { icon: Users, value: "5,000+", label: "Active Members" },
+    { icon: Target, value: "120+", label: "Programs Run" },
+    { icon: HeartHandshake, value: "18,000+", label: "Lives Touched" },
+    { icon: TrendingUp, value: "9", label: "Years of Impact" },
+];
+
+const steps = [
+    { icon: UserPlus, title: "Choose your plan", desc: "Pick the membership tier that matches how involved you want to be." },
+    { icon: CreditCard, title: "Complete secure checkout", desc: "Pay safely through Razorpay using cards, UPI, or net banking." },
+    { icon: Rocket, title: "Start making an impact", desc: "Get instant access to programs, events, and your welcome email." },
+];
+
+const testimonials = [
+    { name: "Ananya Sharma", role: "Gold Member since 2023", quote: "Being a member here isn't just a subscription — I actually see where my contribution goes every month." },
+    { name: "Rajiv Mehta", role: "Silver Member since 2022", quote: "The volunteer opportunities are real and hands-on. My kids have joined two of the events with me." },
+    { name: "Priya Nair", role: "Platinum Member since 2021", quote: "Renewal reminders, tax receipts, everything is handled smoothly. It just works." },
+];
+
+
+const Heading = ({ title, colorTitle, description = "" }) => {
+    return (
+        <div>
+            <h2 className="fade-up d-100 font-bold text-gray-900 mb-1.5 tracking-tight text-3xl sm:text-4xl">
+                {title}{" "}
+                {colorTitle &&
+                    <span className="text-(--primary)">{colorTitle}</span>
+                }
+            </h2>
+            {
+                description &&
+                <p className="fade-up d-200 text-gray-500 max-w-xl mx-auto mb-2 leading-relaxed text-base sm:text-lg">
+                    {description}
+                </p>
+            }
+        </div>
+
+    )
+}
 /* ─────────────────────────────────────────
    Page
 ───────────────────────────────────────── */
@@ -224,6 +279,7 @@ export default function MembershipPlans() {
     const [activePlanId, setActivePlanId] = useState(null);
     const [loadingPlanId, setLoadingPlanId] = useState(null);
     const [fetching, setFetching] = useState(true);
+    const [openFaq, setOpenFaq] = useState(0);
 
     useEffect(() => {
         (async () => {
@@ -253,15 +309,9 @@ export default function MembershipPlans() {
     async function handleSubscribe(plan) {
         if (!user) {
             toast.error("Please login to continue");
-
-            // optional: save redirect path
-            Navigate("/login", {
-                state: { from: "/membership/paid" }
-            });
-
-            return; // ❗ stop execution
+            Navigate("/login", { state: { from: "/membership/paid" } });
+            return;
         }
-
 
         setLoadingPlanId(plan._id);
         try {
@@ -325,51 +375,35 @@ export default function MembershipPlans() {
         <div className="min-h-screen w-full bg-slate-50 overflow-x-hidden">
             <GlobalStyles />
 
-            {/* Background blobs */}
-            {/* <div aria-hidden className="blob pointer-events-none fixed -top-24 -right-24 w-80 h-80 rounded-full z-0"
-                style={{ background: "radial-gradient(circle, rgba(99,102,241,.10) 0%, transparent 70%)" }} />
-            <div aria-hidden className="blob2 pointer-events-none fixed -bottom-20 -left-20 w-64 h-64 rounded-full z-0"
-                style={{ background: "radial-gradient(circle, rgba(16,185,129,.09) 0%, transparent 70%)" }} /> */}
-
             <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14 pb-20">
 
                 {/* ── HERO ── */}
-                <section className="text-center mb-12 sm:mb-14">
-
-
-                    <h1 className="fade-up d-100 font-extrabold text-gray-900 mb-4 tracking-tight text-3xl sm:text-5xl"
-                    >
+                <section className="text-center mb-10 sm:mb-12">
+                    <h1 className="fade-up d-100 font-bold text-gray-900 mb-3 tracking-tight text-3xl sm:text-4xl">
                         Choose Your{" "}
                         <span className="text-(--primary)">Membership</span>
                     </h1>
 
-                    <p className="fade-up d-200 text-gray-500 mx-auto mb-8 leading-relaxed"
-                        style={{ fontSize: "clamp(.93rem,2vw,1.1rem)", maxWidth: 500 }}>
-                        Select the plan that works best for you and start making a difference today
+                    <p className="fade-up d-200 text-gray-500 max-w-xl mx-auto mb-2 leading-relaxed text-base sm:text-lg">
+                        Select the plan that works best for you and start making a real, trackable difference today.
                     </p>
-
-                    {/* Feature pills */}
-                    <div className="fade-up d-300 flex flex-wrap justify-center gap-2">
-                        {featurePills.map((p, i) => (
-                            <span key={i}
-                                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-white text-gray-700 border border-gray-200 shadow-sm">
-                                <span className="text-sm">{p.icon}</span>
-                                {p.label}
-                            </span>
-                        ))}
-                    </div>
                 </section>
 
+
+
                 {/* ── PLANS ── */}
-                <section className="fade-up d-400 mb-14">
+                <section className="fade-up d-400 mb-16">
                     {fetching ? (
                         <div className="flex flex-col items-center justify-center py-24 gap-4">
-                            <div className="w-12 h-12 rounded-full border-4 border-gray-200 border-t-indigo-500 animate-spin" />
+                            <Loader2 size={40} className="animate-spin text-(--primary)" />
                             <p className="text-sm text-gray-500">Loading plans…</p>
                         </div>
                     ) : plans.length === 0 ? (
-                        <div className="text-center py-24">
-                            <p className="text-lg font-semibold text-gray-900 mb-1">No plans available</p>
+                        <div className="text-center py-24 sm:py-40">
+                            <div className="inline-flex items-center justify-center w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-indigo-50 mb-6">
+                                <CalendarX className="w-8 h-8 sm:w-10 sm:h-10 text-indigo-400" strokeWidth={1.5} />
+                            </div>
+                            <p className="text-lg sm:text-4xl font-semibold text-gray-700 mb-1">No plans available</p>
                             <p className="text-gray-500 text-sm">Please check back later.</p>
                         </div>
                     ) : (
@@ -399,65 +433,147 @@ export default function MembershipPlans() {
                     )}
                 </section>
 
-                {/* ── TRUST STRIP ── */}
-                <section className="fade-up d-500 bg-white rounded-2xl p-5 sm:p-6 max-w-3xl mx-auto mb-8 border border-gray-200 shadow-sm">
-                    <p className="text-[10px] font-bold text-center text-gray-400 uppercase tracking-[.16em] mb-5">
-                        Trusted &amp; Secure
-                    </p>
-                    <div className="grid grid-cols-2 sm:flex sm:flex-wrap justify-center items-center gap-3">
-                        {trustItems.map((t, i) => (
-                            <div key={i}
-                                className="flex items-center gap-2 px-3 py-2.5 rounded-xl transition-transform duration-150 hover:-translate-y-0.5"
-                                style={{ background: t.bg }}>
-                                <span className="flex-shrink-0" style={{ color: t.color }}>{t.icon}</span>
-                                <span className="text-xs font-semibold" style={{ color: t.color }}>{t.label}</span>
+                {/* ── IMPACT STATS ── */}
+                <section className="fade-up d-300 mb-14">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+                        {impactStats.map((s, i) => {
+                            const Icon = s.icon;
+                            return (
+                                <div key={i} className="bg-white rounded-2xl border border-gray-200 shadow-sm px-4 py-5 text-center">
+                                    <div className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-indigo-50 text-(--primary) mb-2.5">
+                                        <Icon size={18} />
+                                    </div>
+                                    <p className="text-xl sm:text-2xl font-bold text-gray-900">{s.value}</p>
+                                    <p className="text-xs sm:text-sm text-gray-500">{s.label}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </section>
+
+                {/* ── MEMBERSHIP BENEFITS ── */}
+                <section className="fade-up d-500 max-w-5xl mx-auto my-20">
+                    <div className="text-center mb-8">
+                        <Heading title="Every Membership" colorTitle="Includes" description="The essentials every member gets, regardless of tier" />
+
+                    </div>
+                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {membershipBenefits.map((b, i) => {
+                            const Icon = b.icon;
+                            return (
+                                <div key={i} className="bg-white rounded-2xl border border-gray-200 p-5">
+                                    <div className="inline-flex items-center justify-center w-10 h-10 rounded-xl bg-indigo-50 text-(--primary) mb-3">
+                                        <Icon size={18} />
+                                    </div>
+                                    <p className="text-sm font-bold text-gray-900 mb-1">{b.title}</p>
+                                    <p className="text-sm text-gray-500 leading-relaxed">{b.desc}</p>
+                                </div>
+                            );
+                        })}
+                    </div>
+                </section>
+
+                {/* ── HOW IT WORKS ── */}
+                <section className="fade-up d-500 max-w-4xl mx-auto mb-16 py-20">
+                    <div className="text-center mb-8">
+                        <Heading title="How Its" colorTitle="Work" description="From sign-up to your first program in three steps" />
+
+                    </div>
+                    <div className="grid sm:grid-cols-3 gap-6">
+                        {steps.map((s, i) => {
+                            const Icon = s.icon;
+                            return (
+                                <div key={i} className="relative text-center">
+                                    <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-(--primary) text-white mb-4">
+                                        <Icon size={22} />
+                                    </div>
+                                    <p className="text-sm sm:text-base md:text-lg font-bold text-gray-900 mb-1">{s.title}</p>
+                                    <p className="text-sm text-gray-500 leading-relaxed max-w-[240px] mx-auto">{s.desc}</p>
+                                    {i < steps.length - 1 && (
+                                        <div className="hidden sm:block absolute top-7 left-[calc(50%+40px)] w-[calc(100%-80px)] h-px bg-gray-200" />
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    {/* ── PAYMENT METHODS ── */}
+                    <section className="fade-up d-500 text-center mt-14">
+                        <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[.16em] mb-3">
+                            Accepted Payment Methods
+                        </p>
+                        <div className="inline-flex flex-wrap justify-center gap-2">
+                            {paymentMethods.map(({ icon: Icon, label }) => (
+                                <span key={label}
+                                    className="inline-flex items-center gap-1.5 bg-white text-gray-600 text-xs font-semibold px-4 py-1.5 rounded-lg border border-gray-200 shadow-sm">
+                                    <Icon size={14} className="text-gray-400" />
+                                    {label}
+                                </span>
+                            ))}
+                        </div>
+                    </section>
+                </section>
+
+
+
+
+                {/* ── TESTIMONIALS ── */}
+                <section className="fade-up d-600 max-w-5xl mx-auto py-20">
+                    <div className="text-center mb-8">
+                        <Heading title="What Members" colorTitle="Says" description="Real feedback from people already on a plan" />
+
+                    </div>
+                    <div className="grid sm:grid-cols-3 gap-5">
+                        {testimonials.map((t, i) => (
+                            <div key={i} className="bg-white rounded-2xl border border-gray-200 p-5 flex flex-col">
+                                <Quote size={20} className="text-indigo-200 mb-3" fill="currentColor" />
+                                <p className="text-sm text-gray-700 leading-relaxed mb-4 flex-1">&ldquo;{t.quote}&rdquo;</p>
+                                <div>
+                                    <p className="text-sm font-bold text-gray-900">{t.name}</p>
+                                    <p className="text-xs text-gray-500">{t.role}</p>
+                                </div>
                             </div>
                         ))}
                     </div>
                 </section>
 
-                {/* ── PAYMENT METHODS ── */}
-                <section className="fade-up d-500 text-center mb-12">
-                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-[.16em] mb-3">
-                        Accepted Payment Methods
-                    </p>
-                    <div className="inline-flex flex-wrap justify-center gap-2">
-                        {["Credit Card", "Debit Card", "Net Banking", "UPI"].map(m => (
-                            <span key={m} className="bg-white text-gray-500 text-xs font-semibold px-4 py-1.5 rounded-lg border border-gray-200 shadow-sm">
-                                {m}
-                            </span>
-                        ))}
-                    </div>
-                </section>
-
-                {/* ── FAQ ── */}
-                <section className="fade-up d-600 max-w-4xl mx-auto mb-12">
+                {/* ── FAQ (accordion) ── */}
+                <section className="fade-up d-600 max-w-4xl mx-auto py-15">
                     <div className="text-center mb-8">
                         <span className="inline-block text-[10px] font-bold uppercase tracking-[.14em] px-4 py-1.5 rounded-full mb-4 bg-indigo-50 border border-indigo-200 text-(--primary)">
                             Got Questions?
                         </span>
-                        <h2 className="font-extrabold text-gray-900 mb-2 tracking-tight"
-                            style={{ fontSize: "clamp(1.5rem,4vw,2.25rem)", lineHeight: 1.15 }}>
-                            Frequently Asked <span className="text-(--primary)">Questions</span>
-                        </h2>
-                        <p className="text-gray-500 text-sm sm:text-base leading-relaxed">
-                            Everything you need to know about our membership plans
-                        </p>
+                        <Heading title="Frequently Asked" colorTitle="Questions" description="Everything you need to know about our membership plans" />
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        {faqItems.map((item, i) => (
-                            <div key={i}
-                                className="bg-white rounded-2xl p-5 flex flex-col gap-3 border border-gray-200 shadow-sm transition-all duration-200 hover:shadow-md hover:-translate-y-0.5">
-                                <div className="flex items-start gap-3">
-                                    <div className="flex items-center justify-center w-9 h-9 rounded-xl flex-shrink-0 bg-indigo-50 text-indigo-600">
-                                        {item.icon}
-                                    </div>
-                                    <p className="text-sm font-bold text-gray-900 leading-snug pt-1.5">{item.q}</p>
+                    <div className="flex flex-col gap-3">
+                        {faqItems.map((item, i) => {
+                            const Icon = item.icon;
+                            const isOpen = openFaq === i;
+                            return (
+                                <div key={i}
+                                    className="bg-white rounded-2xl border border-gray-200 shadow overflow-hidden transition-shadow duration-200 hover:shadow-sm py-4">
+                                    <button
+                                        onClick={() => setOpenFaq(isOpen ? -1 : i)}
+                                        className="w-full flex items-center gap-3 text-left px-4 cursor-pointer"
+                                        aria-expanded={isOpen}
+                                    >
+                                        <div className={`flex items-center justify-center size-8 sm:size-10 rounded-lg sm:rounded-lg flex-shrink-0 transition-colors ${isOpen ? "bg-(--primary) text-white" : "bg-indigo-50 text-indigo-600"}`}>
+                                            <Icon size={16} />
+                                        </div>
+                                        <p className="flex-1 text-sm sm:text-base md:text-lg font-medium text-gray-900 leading-snug">{item.q}</p>
+                                        <ChevronDown
+                                            size={18}
+                                            className={`text-gray-400 flex-shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`}
+                                        />
+                                    </button>
+                                    {isOpen && (
+                                        <div className="faq-answer px-5 pb-4 pl-[4.25rem] pt-2">
+                                            <p className="text-sm sm:text-base text-gray-600 leading-relaxed">{item.a}</p>
+                                        </div>
+                                    )}
                                 </div>
-                                <p className="text-sm text-gray-500 leading-relaxed pl-12">{item.a}</p>
-                            </div>
-                        ))}
+                            );
+                        })}
                     </div>
                 </section>
 
@@ -470,7 +586,7 @@ export default function MembershipPlans() {
                     </p>
                 </div>
 
-            </div>
-        </div>
+            </div >
+        </div >
     );
 }

@@ -5,6 +5,7 @@ import MeetOurTeam from '../components/home/MeetOutTeams';
 import CommunityStats from '../components/home/Communitystats';
 import FAQ from '../components/home/HomeFaq';
 import { Link } from 'react-router-dom';
+import CTA from '../components/CTA';
 
 const highlights = [
   'Quality education for underprivileged children',
@@ -116,7 +117,9 @@ const Home = () => {
       <OurServices />
       <MeetOurTeam />
       <CommunityStats />
+
       <FAQ />
+      <CTA />
     </main>
   )
 }

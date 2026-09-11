@@ -1,6 +1,7 @@
 import { Home, Info, Users, UserCircle, LogIn, ChevronDown } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
 import ProfileMenu from './Profilemenu';
 
@@ -120,27 +121,40 @@ function NavItem({ link, activePath }) {
             </button>
 
             {/* Dropdown */}
-            <div
-                className={`absolute top-full left-1/2 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 py-1.5 z-50 transition-all duration-200
-                    ${hovered ? 'opacity-100 visible translate-y-0' : 'opacity-0 invisible -translate-y-1'}`}
-                style={{ transform: `translateX(-50%) translateY(${hovered ? '0' : '-4px'})` }}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-            >
-                {link.dropdownItems.map((item) => (
-                    <Link
-                        key={item.id}
-                        to={item.path}
-                        className={`flex items-center px-4 py-2.5 text-sm transition-colors mx-1 rounded-xl
-                            ${activePath === item.path
-                                ? 'bg-blue-50 text-(--primary) font-medium'
-                                : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
-                            }`}
+            <AnimatePresence>
+                {hovered && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -8, scale: 0.96 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -8, scale: 0.96 }}
+                        transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                        style={{ transform: 'translateX(-50%)', left: '50%' }}
+                        className="absolute top-full mt-2 w-52 bg-white rounded-2xl shadow-xl border border-gray-100 py-1.5 z-50 origin-top"
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
                     >
-                        {item.name}
-                    </Link>
-                ))}
-            </div>
+                        {link.dropdownItems.map((item, idx) => (
+                            <motion.div
+                                key={item.id}
+                                initial={{ opacity: 0, x: -8 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                transition={{ duration: 0.15, delay: idx * 0.03 }}
+                            >
+                                <Link
+                                    to={item.path}
+                                    className={`flex items-center px-4 py-2.5 text-sm transition-colors mx-1 rounded-xl
+                                        ${activePath === item.path
+                                            ? 'bg-blue-50 text-(--primary) font-medium'
+                                            : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                                        }`}
+                                >
+                                    {item.name}
+                                </Link>
+                            </motion.div>
+                        ))}
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }
@@ -156,7 +170,12 @@ export default function Navbar() {
     const { pathname } = useLocation();
     const { user, logout } = useAuth();
     return (
-        <nav className="w-full sticky top-0 z-[110]">
+        <motion.nav
+            initial={{ y: -80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            className="w-full sticky top-0 z-[110]"
+        >
             {/* Top Bar */}
             <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-900">
                 <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
@@ -212,50 +231,100 @@ export default function Navbar() {
             {/* Main Navigation — Pill Bar */}
             <div className="bg-gray-50 border-b border-gray-200">
                 <div className="max-w-[1400px] mx-auto px-1 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between py-3">
+                    <div className="flex items-center justify-between py-1">
 
                         {/* Logo */}
-                        <Link to={'/'} className="flex-shrink-0 flex items-center h-10">
-                            <img
-                                src="/logo.png"
-                                alt="Al Kareem Tarbiyat Logo"
-                                className="h-13 w-auto object-contain"
-                            />
-                        </Link>
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ duration: 0.5, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+                            whileHover={{ scale: 1.04 }}
+                            className="flex-shrink-0 flex items-center"
+                        >
+                            <Link to={'/'} className="flex items-center">
+                                <img
+                                    src="/logo.png"
+                                    alt="Al Kareem Tarbiyat Logo"
+                                    className="h-18 w-auto object-contain"
+                                />
+                            </Link>
+                        </motion.div>
 
                         {/* Desktop — Pill Navbar */}
-                        <div className="hidden lg:flex items-center">
+                        <motion.div
+                            className="hidden lg:flex items-center"
+                            initial="hidden"
+                            animate="visible"
+                            variants={{
+                                hidden: {},
+                                visible: { transition: { staggerChildren: 0.06, delayChildren: 0.2 } }
+                            }}
+                        >
                             <div className="flex items-center gap-1 bg-white border border-gray-200 rounded-full px-2 py-1.5 shadow-sm">
                                 {navLinks.map((link) => (
-                                    <NavItem key={link.id} link={link} activePath={pathname} />
+                                    <motion.div
+                                        key={link.id}
+                                        variants={{
+                                            hidden: { opacity: 0, y: -12 },
+                                            visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } }
+                                        }}
+                                    >
+                                        <NavItem link={link} activePath={pathname} />
+                                    </motion.div>
                                 ))}
 
                                 <div className="w-px h-5 bg-gray-200 mx-1" />
                                 {
                                     user ? <ProfileMenu user={user} logout={logout} /> :
-                                        <Link
-                                            to="/login"
-                                            className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-full transition-all duration-150 whitespace-nowrap
-                                        ${pathname === '/login'
-                                                    ? 'bg-(--primary) text-white shadow-sm'
-                                                    : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                                                }`}
+                                        <motion.div
+                                            variants={{
+                                                hidden: { opacity: 0, y: -12 },
+                                                visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } }
+                                            }}
                                         >
-                                            <LogIn className="w-3.5 h-3.5" />
-                                            Login
-                                        </Link>
+                                            <Link
+                                                to="/login"
+                                                className={`flex items-center gap-1.5 px-4 py-2 text-sm font-medium rounded-full transition-all duration-150 whitespace-nowrap
+                                        ${pathname === '/login'
+                                                        ? 'bg-(--primary) text-white shadow-sm'
+                                                        : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                                                    }`}
+                                            >
+                                                <LogIn className="w-3.5 h-3.5" />
+                                                Login
+                                            </Link>
+                                        </motion.div>
                                 }
 
                                 <div className="w-px h-5 bg-gray-200 mx-1" />
 
-                                <Link to={'/donate'} className="px-4 py-2 bg-(--primary) text-white text-sm font-semibold rounded-full transition-all duration-150 hover:shadow-blue-200 hover:shadow-md whitespace-nowrap">
-                                    Donate
-                                </Link>
-                                <Link to={'/membership/volunteer-form'} className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold rounded-full transition-all duration-150 shadow-sm hover:shadow-teal-200 hover:shadow-md whitespace-nowrap ml-1">
-                                    Join Us
-                                </Link>
+                                <motion.div
+                                    variants={{
+                                        hidden: { opacity: 0, y: -12 },
+                                        visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } }
+                                    }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.96 }}
+                                >
+                                    <Link to={'/donate'} className="px-4 py-2 bg-(--primary) text-white text-sm font-semibold rounded-full transition-shadow duration-150 hover:shadow-blue-200 hover:shadow-md whitespace-nowrap block">
+                                        Donate
+                                    </Link>
+                                </motion.div>
+                                <motion.div
+                                    variants={{
+                                        hidden: { opacity: 0, y: -12 },
+                                        visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } }
+                                    }}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.96 }}
+                                    className="ml-1"
+                                >
+                                    <Link to={'/membership/volunteer-form'} className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold rounded-full transition-shadow duration-150 shadow-sm hover:shadow-teal-200 hover:shadow-md whitespace-nowrap block">
+                                        Join Us
+                                    </Link>
+                                </motion.div>
                             </div>
-                        </div>
+                        </motion.div>
 
                         {/* Mobile Controls */}
                         <div className="lg:hidden flex items-center gap-2">
@@ -263,108 +332,150 @@ export default function Navbar() {
                             <Link to={'/donate'} className="px-4 py-2 bg-(--primary) text-white text-sm font-semibold rounded-full transition-all">
                                 Donate
                             </Link>
-                            <button
+                            <motion.button
                                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                                whileTap={{ scale: 0.9 }}
                                 className="text-gray-700 p-2 rounded-full hover:bg-gray-100 transition-all"
                                 aria-label="Toggle menu"
                             >
-                                {mobileMenuOpen ? (
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <motion.svg
+                                    className="w-5 h-5"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                    animate={{ rotate: mobileMenuOpen ? 90 : 0 }}
+                                    transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                                >
+                                    {mobileMenuOpen ? (
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                                    </svg>
-                                ) : (
-                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    ) : (
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                                    </svg>
-                                )}
-                            </button>
+                                    )}
+                                </motion.svg>
+                            </motion.button>
                         </div>
                     </div>
                 </div>
             </div>
 
             {/* Mobile Menu */}
-            <div
-                className={`lg:hidden bg-white border-b border-gray-200 overflow-hidden transition-all duration-300 ${mobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}
-            >
-                <div className="px-4 py-3 space-y-1">
-                    {navLinks.map((link) => {
-                        const IconComponent = link.icon;
-                        const isActive = isLinkActive(link, pathname);
-                        const isOpen = mobileDropdown === link.id;
+            <AnimatePresence initial={false}>
+                {mobileMenuOpen && (
+                    <motion.div
+                        key="mobile-menu"
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        className="lg:hidden bg-white border-b border-gray-200 overflow-hidden"
+                    >
+                        <motion.div
+                            className="px-4 py-3 space-y-1"
+                            initial="hidden"
+                            animate="visible"
+                            variants={{
+                                hidden: {},
+                                visible: { transition: { staggerChildren: 0.05 } }
+                            }}
+                        >
+                            {navLinks.map((link) => {
+                                const IconComponent = link.icon;
+                                const isActive = isLinkActive(link, pathname);
+                                const isOpen = mobileDropdown === link.id;
 
-                        return (
-                            <div key={link.id}>
-                                {link.hasDropdown ? (
-                                    <div>
-                                        <button
-                                            onClick={() => setMobileDropdown(isOpen ? null : link.id)}
-                                            className={`w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-2xl transition-all
+                                return (
+                                    <motion.div
+                                        key={link.id}
+                                        variants={{
+                                            hidden: { opacity: 0, x: -16 },
+                                            visible: { opacity: 1, x: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } }
+                                        }}
+                                    >
+                                        {link.hasDropdown ? (
+                                            <div>
+                                                <button
+                                                    onClick={() => setMobileDropdown(isOpen ? null : link.id)}
+                                                    className={`w-full flex items-center justify-between px-4 py-3 text-sm font-medium rounded-2xl transition-all
                                                 ${isActive ? 'bg-blue-50 text-(--primary)' : 'text-gray-700 hover:bg-gray-50'}`}
-                                        >
-                                            <div className="flex items-center gap-3">
+                                                >
+                                                    <div className="flex items-center gap-3">
+                                                        {IconComponent && <IconComponent className="w-4 h-4" />}
+                                                        <span>{link.name}</span>
+                                                    </div>
+                                                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
+                                                </button>
+
+                                                <div className={`overflow-hidden transition-all duration-200 ${isOpen ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}>
+                                                    <div className="mt-1 ml-8 space-y-0.5 pb-1">
+                                                        {link.dropdownItems.map((item) => (
+                                                            <Link
+                                                                key={item.id}
+                                                                to={item.path}
+                                                                onClick={() => closeMobileMenu()}
+                                                                className={`block px-4 py-2.5 text-sm rounded-xl transition-colors
+                                                            ${pathname === item.path
+                                                                        ? 'bg-blue-50 text-(--primary) font-medium'
+                                                                        : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                                                                    }`}
+                                                            >
+                                                                {item.name}
+                                                            </Link>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <Link
+                                                to={link.path}
+                                                onClick={() => closeMobileMenu()}
+                                                className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-2xl transition-all
+                                            ${isActive ? 'bg-blue-50 text-(--primary)' : 'text-gray-700 hover:bg-gray-50'}`}
+                                            >
                                                 {IconComponent && <IconComponent className="w-4 h-4" />}
                                                 <span>{link.name}</span>
-                                            </div>
-                                            <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`} />
-                                        </button>
-
-                                        <div className={`overflow-hidden transition-all duration-200 ${isOpen ? 'max-h-60 opacity-100' : 'max-h-0 opacity-0'}`}>
-                                            <div className="mt-1 ml-8 space-y-0.5 pb-1">
-                                                {link.dropdownItems.map((item) => (
-                                                    <Link
-                                                        key={item.id}
-                                                        to={item.path}
-                                                        onClick={() => closeMobileMenu()}
-                                                        className={`block px-4 py-2.5 text-sm rounded-xl transition-colors
-                                                            ${pathname === item.path
-                                                                ? 'bg-blue-50 text-(--primary) font-medium'
-                                                                : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
-                                                            }`}
-                                                    >
-                                                        {item.name}
-                                                    </Link>
-                                                ))}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ) : (
+                                            </Link>
+                                        )}
+                                    </motion.div>
+                                );
+                            })}
+                            {
+                                !user &&
+                                <motion.div
+                                    variants={{
+                                        hidden: { opacity: 0, x: -16 },
+                                        visible: { opacity: 1, x: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } }
+                                    }}
+                                >
                                     <Link
-                                        to={link.path}
+                                        to="/login"
                                         onClick={() => closeMobileMenu()}
                                         className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-2xl transition-all
-                                            ${isActive ? 'bg-blue-50 text-(--primary)' : 'text-gray-700 hover:bg-gray-50'}`}
-                                    >
-                                        {IconComponent && <IconComponent className="w-4 h-4" />}
-                                        <span>{link.name}</span>
-                                    </Link>
-                                )}
-                            </div>
-                        );
-                    })}
-                    {
-                        !user &&
-                        <Link
-                            to="/login"
-                            onClick={() => closeMobileMenu()}
-                            className={`flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-2xl transition-all
                             ${pathname === '/login' ? 'bg-blue-50 text-(--primary)' : 'text-gray-700 hover:bg-gray-50'}`}
-                        >
-                            <LogIn className="w-4 h-4" />
-                            <span>Login</span>
-                        </Link>
-                    }
+                                    >
+                                        <LogIn className="w-4 h-4" />
+                                        <span>Login</span>
+                                    </Link>
+                                </motion.div>
+                            }
 
-                    <div className="pt-3 pb-2 flex gap-2">
-                        <Link to={'/donate'} onClick={() => closeMobileMenu()} className="flex-1 px-5 py-3 bg-(--primary) text-white text-sm font-semibold rounded-full transition-all text-center">
-                            Donate
-                        </Link>
-                        <Link to={'/membership/volunteer-form'} onClick={() => closeMobileMenu()} className="flex-1 px-5 py-3 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold rounded-full transition-all text-center">
-                            Join Us
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        </nav>
+                            <motion.div
+                                variants={{
+                                    hidden: { opacity: 0, y: 12 },
+                                    visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: [0.22, 1, 0.36, 1] } }
+                                }}
+                                className="pt-3 pb-2 flex gap-2"
+                            >
+                                <Link to={'/donate'} onClick={() => closeMobileMenu()} className="flex-1 px-5 py-3 bg-(--primary) text-white text-sm font-semibold rounded-full transition-all text-center">
+                                    Donate
+                                </Link>
+                                <Link to={'/membership/volunteer-form'} onClick={() => closeMobileMenu()} className="flex-1 px-5 py-3 bg-teal-600 hover:bg-teal-700 text-white text-sm font-semibold rounded-full transition-all text-center">
+                                    Join Us
+                                </Link>
+                            </motion.div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.nav>
     );
 }

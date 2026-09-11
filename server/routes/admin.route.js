@@ -1,6 +1,6 @@
 // routes/planRoutes.js
 import express from "express";
-import { approveDignitary, approveVolunteer, assignContact, cancelDonation, cancelSubscription, createPlan, deleteContact, deleteDignitary, deleteDonation, deleteVolunteer, dignitaryApprove, exportDignitaries, exportDonations, exportVolunteers, getAllDignitaries, getAllPlans, getAllSubscriptions, getContactById, getContacts, getContactStats, getDashboardStats, getDignitaryById, getDignitaryExportCount, getDignitaryStats, getDonationById, getDonationExportCount, getDonations, getDonationStats, getExportCount, getSubscriptionById, getSubscriptionStats, getUserDetail, getUsers, getUserStats, getVolunteerById, getVolunteers, getVolunteerStats, LoginAdmin, registerAdmin, rejectDignitary, rejectVolunteer, resetDignitary, resetVolunteer, resetUserOtpBlock, toggleUserActive, updateDonation, updateNotes, updatePlan, updateStatus, verifyDonation } from "../controller/admin.controller.js";
+import { approveDignitary, approveVolunteer, assignContact, cancelDonation, cancelSubscription, createPlan, deleteContact, deleteDignitary, deleteDonation, deleteVolunteer, dignitaryApprove, exportDignitaries, exportDonations, exportVolunteers, getAllDignitaries, getAllPlans, getAllSubscriptions, getContactById, getContacts, getContactStats, getDashboardStats, getDignitaryById, getDignitaryExportCount, getDignitaryStats, getDonationById, getDonationExportCount, getDonations, getDonationStats, getExportCount, getSubscriptionById, getSubscriptionStats, getUserDetail, getUsers, getUserStats, getVolunteerById, getVolunteers, getVolunteerStats, LoginAdmin, registerAdmin, rejectDignitary, rejectVolunteer, resetDignitary, resetVolunteer, resetUserOtpBlock, toggleUserActive, updateDonation, updateNotes, updatePlan, updateStatus, verifyDonation, logoutUser, adminForgotPasswordOtp, adminResetPassword, changePassword } from "../controller/admin.controller.js";
 import adminAuthMiddleware from "../middleware/adminAuth.middleware.js";
 
 
@@ -9,9 +9,10 @@ const router = express.Router();
 // Public Routes
 router.post("/register", registerAdmin)
 router.post("/auth/login", LoginAdmin)
-// router.get("/logout", logoutUser)
-
-
+router.get("/auth/logout", logoutUser)
+router.post("/auth/reset-password-otp", adminForgotPasswordOtp);
+router.post("/auth/reset-password", adminResetPassword);
+router.put("/auth/change-password", adminAuthMiddleware, changePassword);
 // plan
 router.post("/plans", adminAuthMiddleware, createPlan);
 router.get("/plans/all", adminAuthMiddleware, getAllPlans);

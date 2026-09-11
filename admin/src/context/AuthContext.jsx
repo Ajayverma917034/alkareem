@@ -7,6 +7,7 @@ import {
     verifyOtpAPI,
     resetPasswordOtpAPI,
     resetPasswordAPI,
+    changePasswordAPI,
 } from "../utils/authapi";
 
 // ─── State Shape 
@@ -196,6 +197,16 @@ export const AuthProvider = ({ children }) => {
         }
     }, []);
 
+    // ── Change Password (authenticated) ────────────────────────────────────────
+    const changePassword = useCallback(async ({ currentPassword, newPassword }) => {
+        try {
+            const data = await changePasswordAPI({ currentPassword, newPassword });
+            return { success: data.success, message: data.message };
+        } catch (err) {
+            return { success: false, message: err.message };
+        }
+    }, []);
+
     // ── Clear Error ────────────────────────────────────────────────────────────
     const clearError = useCallback(() => {
         dispatch({ type: AUTH_ACTIONS.CLEAR_ERROR });
@@ -216,6 +227,7 @@ export const AuthProvider = ({ children }) => {
         verifyOtp,
         sendResetOtp,
         resetPassword,
+        changePassword,
         clearError,
     };
 

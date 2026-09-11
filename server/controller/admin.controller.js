@@ -12,6 +12,7 @@ import Payment from "../schema/payment.schema.js";
 import Contact from "../schema/contact.schema.js";
 import Subscription from "../schema/subscription.schema.js";
 import ExcelJS from "exceljs";
+import { sendEmail } from "../utils/sendmail.js";
 
 // import { loginValidate, registerValidate } from "../validations/RegisterValidation.js";
 // import { sendEmail } from "../sendmail/Mail.js";
@@ -196,7 +197,119 @@ export const verifyOtp = async (req, res) => {
 }
 
 // password reset otp send
+// send OTP to admin's email for password reset
+export const adminForgotPasswordOtp = async (req, res) => {
+    const { email } = req.body;
+    if (!email) {
+        return res.status(400).json({ message: "Please provide email" });
+    }
 
+    try {
+        const admin = await Admin.findOne({ email });
+
+        if (!admin) {
+            return res.status(400).json({ message: "Admin not found" });
+        }
+
+        const otpvalue = String(Math.floor(Math.random() * 900000 + 100000));
+        admin.resetOtp = otpvalue;
+        admin.resetOtpExpire = Date.now() + 10 * 60 * 1000; // 10 min
+
+        await admin.save();
+
+        await sendEmail({
+            to: admin.email,
+            subject: "Admin Password Reset OTP",
+            html: `<h1>Password Reset</h1><p>Your OTP for password reset is <b>${otpvalue}</b>. It will expire in 10 minutes. If you did not request this, ignore this email.</p><p>Best regards,<br/>The All Kareem Tarbiyat Team</p>`,
+        });
+
+        return res.status(200).json({ success: true, message: "OTP sent to email" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Error occurred while sending reset OTP", error: error.message });
+    }
+};
+
+// verify OTP + set new password
+export const adminResetPassword = async (req, res) => {
+    const { email, otp, newPassword } = req.body;
+
+    if (!email || !otp || !newPassword) {
+        return res.status(400).json({ message: "Please provide email, otp and new password" });
+    }
+    if (newPassword.length < 6) {
+        return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+
+    try {
+        const admin = await Admin.findOne({ email }).select("+password");
+        if (!admin) {
+            return res.status(400).json({ message: "Admin not found" });
+        }
+
+        if (!admin.resetOtp || admin.resetOtp !== otp || admin.resetOtpExpire < Date.now()) {
+            return res.status(400).json({ message: "Invalid or expired OTP" });
+        }
+
+        admin.password = await bcrypt.hash(newPassword, 10);
+        admin.resetOtp = "";
+        admin.resetOtpExpire = 0;
+
+        await admin.save();
+
+        await sendEmail({
+            to: admin.email,
+            subject: "Password Reset Successful",
+            html: `<h1>Password Reset Successful</h1><p>Your admin password was just changed. If this wasn't you, contact support immediately.</p><p>Best regards,<br/>The All Kareem Tarbiyat Team</p>`,
+        });
+
+        return res.status(200).json({ success: true, message: "Password reset successfully" });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Error occurred while resetting password", error: error.message });
+    }
+};
+
+export const changePassword = async (req, res) => {
+    try {
+        if (!req.user || !req.user.id) {
+            return res.status(401).json({ message: "Unauthorized user" });
+        }
+
+        const { currentPassword, newPassword } = req.body;
+
+        if (!currentPassword || !newPassword) {
+            return res.status(400).json({ message: "Please provide current and new password" });
+        }
+        if (newPassword.length < 6) {
+            return res.status(400).json({ message: "New password must be at least 6 characters" });
+        }
+        if (currentPassword === newPassword) {
+            return res.status(400).json({ message: "New password must be different from current password" });
+        }
+
+        const admin = await Admin.findById(req.user.id).select("+password");
+        if (!admin) {
+            return res.status(404).json({ message: "Admin not found" });
+        }
+
+        const isMatch = await bcrypt.compare(currentPassword, admin.password);
+        if (!isMatch) {
+            return res.status(400).json({ message: "Current password is incorrect" });
+        }
+
+        admin.password = await bcrypt.hash(newPassword, 10);
+        await admin.save();
+
+        return res.status(200).json({ success: true, message: "Password updated successfully" });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Error occurred while updating password" });
+    }
+};
+
+// these are not used for reset password
 export const resetPasswordOtp = async (req, res) => {
     const { email } = req.body;
     if (!email) {

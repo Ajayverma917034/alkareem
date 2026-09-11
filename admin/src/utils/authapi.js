@@ -44,5 +44,12 @@ export const resetPasswordAPI = async (payload) => {
     return data;
 };
 
+export const changePasswordAPI = async ({ currentPassword, newPassword }) => {
+    const { data } = await axiosInstance.put("/auth/change-password", {
+        currentPassword,
+        newPassword,
+    });
+    return data;
+};
 
 

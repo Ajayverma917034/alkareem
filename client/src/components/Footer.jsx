@@ -87,7 +87,7 @@ export default function Footer() {
                 <div className="flex flex-col gap-4 max-sm:col-span-2">
                     {/* Logo + name */}
                     <div className="flex items-start gap-3">
-                        <div className="w-[70px] h-[70px] rounded-full bg-white flex-shrink-0 p-2 overflow-hidden flex items-center justify-center">
+                        <div className="w-auto h-[80px] bg-white flex-shrink-0 px-2 overflow-hidden flex items-center justify-center">
                             <img
                                 src="/logo.png"
                                 alt="Al Kareem Ebiyat"
@@ -95,15 +95,11 @@ export default function Footer() {
                                 onError={e => { e.target.style.display = 'none'; }}
                             />
                         </div>
-                        <h2 className="text-white font-bold text-[15px] leading-snug pt-1">
-                            Al Kareem Ebiyat<br />
-                            Educational Welfare<br />
-                            Trust
-                        </h2>
+
                     </div>
 
                     {/* Tagline */}
-                    <p className="text-[13px] text-gray-400 leading-relaxed">
+                    <p className="text-[13px] text-gray-300 leading-relaxed">
                         We are a non-profit organization working to improve
                         education, healthcare, and social equality across communities.
                     </p>
@@ -139,13 +135,13 @@ export default function Footer() {
 
                 {/* ── Col 2 : Quick Links ── */}
                 <div>
-                    <h3 className="text-white font-bold text-[15px] mb-4">Quick Links</h3>
-                    <ul className="space-y-2.5">
+                    <h3 className="text-white font-bold text-[15px] sm:text-lg mb-3">Quick Links</h3>
+                    <ul className="space-y-2">
                         {quickLinks.map(({ label, to }) => (
                             <li key={label}>
                                 <Link
                                     to={to}
-                                    className="text-[13px] text-gray-400 hover:text-white transition-colors duration-150"
+                                    className="text-[13px] sm:text-sm text-gray-300 font-medium hover:text-white transition-colors duration-150"
                                 >
                                     {label}
                                 </Link>
@@ -156,10 +152,10 @@ export default function Footer() {
 
                 {/* ── Col 3 : Our Services ── */}
                 <div>
-                    <h3 className="text-white font-bold text-[15px] mb-4">Our Services</h3>
+                    <h3 className="text-white font-bold text-[15px] sm:text-lg mb-3">Our Services</h3>
                     <ul className="space-y-2.5">
                         {services.map(service => (
-                            <li key={service} className="text-[13px] text-gray-400">
+                            <li key={service} className="text-[13px] sm:text-sm text-gray-300 font-medium hover:text-white transition-colors duration-150">
                                 {service}
                             </li>
                         ))}
@@ -168,15 +164,15 @@ export default function Footer() {
 
                 {/* ── Col 4 : Contact Us ── */}
                 <div className=' max-sm:col-span-2'>
-                    <h3 className="text-white font-bold text-[15px] mb-4">Contact Us</h3>
+                    <h3 className="text-white font-bold text-[15px] sm:text-lg mb-3">Contact Us</h3>
                     <ul className="space-y-3">
                         {contactInfo.map(({ icon: Icon, label, text, href }) => (
-                            <li key={label} className="flex items-start gap-2 text-[13px] text-gray-400">
-                                <Icon size={14} className="mt-0.5 flex-shrink-0 text-gray-500" />
+                            <li key={label} className="flex items-center gap-2 text-[13px] text-gray-300">
+                                <Icon size={14} className="mt-0.5 flex-shrink-0 text-gray-300" />
                                 <span>
-                                    <span className="text-gray-500">{label}: </span>
+                                    <span className="text-gray-300 font-medium">{label}: </span>
                                     {href ? (
-                                        <a href={href} className="hover:text-white transition-colors duration-150">
+                                        <a href={href} className="text-[13px] sm:text-[15px] text-gray-300 font-medium hover:text-white transition-colors duration-150 hover:text-white">
                                             {text}
                                         </a>
                                     ) : (
