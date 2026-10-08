@@ -6,6 +6,7 @@ import CommunityStats from '../components/home/Communitystats';
 import FAQ from '../components/home/HomeFaq';
 import { Link } from 'react-router-dom';
 import CTA from '../components/CTA';
+import { Reveal, StaggerGroup, StaggerItem } from '../components/motion/Reveal';
 
 const highlights = [
   'Quality education for underprivileged children',
@@ -24,7 +25,7 @@ const Home = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
 
             {/* ── Left: Image ── */}
-            <div className="relative">
+            <Reveal direction="left" className="relative">
               <div className="relative rounded-2xl overflow-hidden">
                 <img
                   src="https://images.unsplash.com/photo-1542810634-71277d95dcbb?w=900&q=85&fit=crop&crop=faces"
@@ -47,53 +48,53 @@ const Home = () => {
               </div>
 
               {/* Small inset image — offset bottom right */}
-              <div className="absolute -bottom-8 -right-4 lg:-right-10 size-25 sm:w-44 sm:h-44 rounded-xl overflow-hidden shadow-2xl border-4 border-white">
+              <Reveal direction="scale" delay={0.25} className="absolute -bottom-8 -right-4 lg:-right-10 size-25 sm:w-44 sm:h-44 rounded-xl overflow-hidden shadow-2xl border-4 border-white">
                 <img
                   src="https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=400&q=80&fit=crop"
                   alt="Volunteers at work"
                   className="w-full h-full object-cover"
                 />
-              </div>
-            </div>
+              </Reveal>
+            </Reveal>
 
             {/* ── Right: Content ── */}
             <div className="lg:pl-4">
               {/* Eyebrow */}
-              <p className="text-xs font-bold uppercase text-(--primary) mb-1 sm:mb-4">
+              <Reveal direction="right" as="p" className="text-xs font-bold uppercase text-(--primary) mb-1 sm:mb-4">
                 Who We Are
-              </p>
+              </Reveal>
 
               {/* Heading — clean, no underline gimmick */}
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-[1.1] mb-4">
+              <Reveal direction="up" delay={0.1} as="h2" className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-[1.1] mb-4">
                 A non-profit built<br className="hidden sm:block" /> on trust &amp; service
-              </h2>
+              </Reveal>
 
 
               {/* Body copy */}
-              <p className="text-gray-600 text-base sm:text-lg leading-relaxed mb-3 sm:mb-5">
+              <Reveal direction="up" delay={0.18} as="p" className="text-gray-600 text-base sm:text-lg leading-relaxed mb-3 sm:mb-5">
                 We are dedicated to improving lives through education, healthcare, and
                 community support - one family at a time.
-              </p>
-              <p className="text-gray-500 text-base leading-relaxed mb-3 sm:mb-8">
+              </Reveal>
+              <Reveal direction="up" delay={0.24} as="p" className="text-gray-500 text-base leading-relaxed mb-3 sm:mb-8">
                 Our mission is to bring hope and opportunities to underprivileged children
                 and families. With the help of our volunteers and donors, we are creating a
                 better future every single day.
-              </p>
+              </Reveal>
 
               {/* Checklist */}
-              <ul className="space-y-1 mb-6 sm:mb-10">
+              <StaggerGroup as="ul" delayChildren={0.3} className="space-y-1 mb-6 sm:mb-10">
                 {highlights.map((item, i) => (
-                  <li key={i} className="flex items-start gap-3">
+                  <StaggerItem as="li" direction="left" key={i} className="flex items-start gap-3">
                     <span className="mt-0.5 w-5 h-5 rounded-full bg-teal-50 border border-teal-200 flex items-center justify-center flex-shrink-0">
                       <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" />
                     </span>
                     <span className="text-gray-600 text-sm sm:text-base">{item}</span>
-                  </li>
+                  </StaggerItem>
                 ))}
-              </ul>
+              </StaggerGroup>
 
               {/* CTA row */}
-              <div className="flex flex-wrap gap-3">
+              <Reveal direction="up" delay={0.4} className="flex flex-wrap gap-3">
                 <Link
                   to="/about"
                   className="inline-flex items-center gap-2 px-6 py-3 bg-(--primary) text-white text-sm font-semibold rounded-full  hover:-translate-y-0.5 transition-all duration-200"
@@ -108,7 +109,7 @@ const Home = () => {
                   <Users className="w-4 h-4" />
                   Meet the Team
                 </Link>
-              </div>
+              </Reveal>
             </div>
           </div>
         </div>

@@ -1,8 +1,9 @@
 // ContentResearchTeam.jsx  →  src/components/home/ContentResearchTeam.jsx
 
 import React, { useState } from 'react';
-import { ArrowRight, Mail } from 'lucide-react';
+import { ArrowRight, Mail, BookOpen, Newspaper, Megaphone } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Reveal, StaggerGroup, StaggerItem } from '../components/motion/Reveal';
 
 // ─── SVG Social Icons ──────────────────────────────────────────────────────────
 const FacebookIcon = ({ size = 16 }) => (
@@ -48,6 +49,7 @@ const TEAM = [
         role: 'Senior Content Writer',
         img: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&q=85&fit=crop&crop=faces',
         bio: 'Creates impactful articles focused on education, social awareness, and community upliftment under Al-Kareem Trust initiatives.',
+        short: 'Education & social-awareness writing',
         social: {
             facebook: '#',
             instagram: '#',
@@ -61,6 +63,7 @@ const TEAM = [
         role: 'Social Research Analyst',
         img: 'https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=500&q=85&fit=crop&crop=faces',
         bio: 'Conducts field research and prepares reports on poverty, education, and healthcare to support NGO programs.',
+        short: 'Field research on poverty & healthcare',
         social: {
             facebook: '#',
             instagram: '#',
@@ -74,6 +77,7 @@ const TEAM = [
         role: 'Content Editor',
         img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=85&fit=crop&crop=faces',
         bio: "Ensures all NGO publications are accurate, meaningful, and aligned with the trust's mission and vision.",
+        short: 'Editorial accuracy & publication review',
         social: {
             facebook: '#',
             instagram: '#',
@@ -87,12 +91,33 @@ const TEAM = [
         role: 'Digital Media Lead',
         img: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&q=85&fit=crop&crop=faces',
         bio: `Drives Al-Kareem's digital presence, crafting campaigns that amplify community stories and donor engagement.`,
+        short: 'Digital campaigns & donor engagement',
         social: {
             facebook: '#',
             instagram: '#',
             linkedin: '#',
             youtube: '#',
         },
+    },
+];
+
+// Editorial highlights — adds descriptive, keyword-rich body content and a
+// second visual rhythm above the team grid.
+const HIGHLIGHTS = [
+    {
+        icon: BookOpen,
+        title: 'Research-Backed Reporting',
+        desc: 'Every article and report is grounded in on-ground field research across the communities we serve in and around Bhopal.',
+    },
+    {
+        icon: Newspaper,
+        title: 'Awareness Publications',
+        desc: 'Regular publications on education access, healthcare gaps, and social welfare help donors and volunteers understand real community needs.',
+    },
+    {
+        icon: Megaphone,
+        title: 'Community Storytelling',
+        desc: 'We document the voices of the families and volunteers behind every program, turning outcomes into stories that build trust.',
     },
 ];
 
@@ -112,16 +137,20 @@ function TeamCard({ m }) {
     const socialEntries = Object.entries(m.social).filter(([, href]) => href);
 
     return (
-        <div
+        <article
             className="group flex flex-col items-center text-center"
             onMouseEnter={() => setHovered(true)}
             onMouseLeave={() => setHovered(false)}
+            itemScope
+            itemType="https://schema.org/Person"
         >
             {/* Photo container */}
-            <div className="relative w-full aspect-[3/3.6] rounded-2xl overflow-hidden mb-5 bg-slate-100">
+            <div className="relative w-full aspect-[3/3.6] rounded-2xl overflow-hidden mb-5 bg-slate-100 shadow-sm">
                 <img
                     src={m.img}
-                    alt={m.name}
+                    alt={`${m.name} — ${m.role} at Al-Kareem Tarbiyat Educational and Welfare Trust`}
+                    itemProp="image"
+                    loading="lazy"
                     className="w-full h-full object-cover object-top transition-transform duration-700 ease-out group-hover:scale-[1.04]"
                 />
 
@@ -147,7 +176,7 @@ function TeamCard({ m }) {
 
                     {/* Mail button */}
                     <button
-                        aria-label="Email"
+                        aria-label={`Email ${m.name}`}
                         className={`
                             mt-4 self-center w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm
                             border border-white/30 flex items-center justify-center text-white
@@ -163,15 +192,21 @@ function TeamCard({ m }) {
             </div>
 
             {/* Name */}
-            <h3 className="text-base lg:text-xl font-bold text-slate-900 leading-snug mb-2">
+            <h3 itemProp="name" className="text-base lg:text-xl font-bold text-slate-900 leading-snug mb-1.5">
                 {m.name}
             </h3>
 
             {/* Role badge */}
-            <span className="inline-block bg-slate-100 text-slate-500 text-xs font-medium px-3 py-1 rounded-full mb-4">
+            <span itemProp="jobTitle" className="inline-block bg-slate-100 text-slate-500 text-xs font-medium px-3 py-1 rounded-full mb-3">
                 {m.role}
             </span>
 
+            {/* Always-visible one-line summary — keeps key content readable
+                without relying on the hover state, which helps both users
+                scanning on touch devices and search engines indexing the page. */}
+            <p itemProp="description" className="text-slate-400 text-xs lg:text-sm leading-relaxed mb-4 px-2">
+                {m.short}
+            </p>
 
             {/* Social icons */}
             <div className="flex items-center justify-center gap-3">
@@ -183,7 +218,7 @@ function TeamCard({ m }) {
                         <a
                             key={key}
                             href={href}
-                            aria-label={label}
+                            aria-label={`${m.name} on ${label}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="w-8 h-8 rounded-full flex items-center justify-center bg-slate-100 hover:scale-110 transition-all duration-200"
@@ -194,39 +229,71 @@ function TeamCard({ m }) {
                     );
                 })}
             </div>
-        </div>
+        </article>
     );
 }
 
 // ─── Main ──────────────────────────────────────────────────────────────────────
-export default function Authors() {
+export default function ContentResearchTeam() {
     return (
-        <section className="bg-white py-10 lg:py-10">
+        <section
+            id="content-research-team"
+            aria-labelledby="crt-heading"
+            className="bg-white py-16 lg:py-24"
+        >
             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header */}
-                <div className="text-center mb-14">
-                    <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black leading-[1.1] mb-3">
+                <Reveal direction="up" as="header" className="text-center max-w-5xl mx-auto mb-10">
+                    <p className="text-xs font-bold uppercase tracking-widest text-(--primary) mb-3">
+                        People Behind The Reports
+                    </p>
+                    <h2 id="crt-heading" className="text-2xl sm:text-3xl lg:text-4xl font-bold text-black leading-[1.1] mb-4">
                         Our Content &amp; Research Team
                     </h2>
-                    <p className="text-slate-500 text-base max-w-xl mx-auto leading-relaxed">
-                        Dedicated team working to spread knowledge, awareness, and positive change
-                        through Al-Kareem Tarbiyat Educational and Welfare Trust.
+                    <p className="text-slate-500 text-base lg:text-lg leading-relaxed">
+                        Behind every awareness campaign, field report, and community story published by Al-Kareem
+                        Tarbiyat Educational and Welfare Trust is a small team of writers, researchers, and editors.
+                        This content and research team studies education gaps, healthcare access, and social welfare
+                        needs across Bhopal's underserved communities, then turns those findings into the articles,
+                        reports, and campaigns that inform our donors, volunteers, and the wider public about the
+                        real impact of our work.
                     </p>
-                </div>
+                </Reveal>
+
+                {/* Editorial highlights — adds scannable, keyword-relevant
+                    supporting content above the team grid */}
+                <StaggerGroup as="div" amount={0.3} className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-14">
+                    {HIGHLIGHTS.map(({ icon: Icon, title, desc }) => (
+                        <StaggerItem
+                            as="div"
+                            direction="up"
+                            key={title}
+                            className="bg-slate-50 rounded-2xl p-5 lg:p-6 border border-slate-100 text-left"
+                        >
+                            <div className="w-10 h-10 rounded-full bg-white border border-slate-200 flex items-center justify-center mb-3">
+                                <Icon size={18} className="text-(--primary)" strokeWidth={1.75} />
+                            </div>
+                            <h3 className="font-bold text-slate-900 text-sm lg:text-base mb-1">{title}</h3>
+                            <p className="text-slate-500 text-xs lg:text-sm leading-relaxed">{desc}</p>
+                        </StaggerItem>
+                    ))}
+                </StaggerGroup>
 
                 {/* Grid */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
-                    {TEAM.map(m => (
-                        <TeamCard key={m.id} m={m} />
+                <StaggerGroup as="div" amount={0.1} className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12">
+                    {TEAM.map((m, i) => (
+                        <StaggerItem as="div" direction={i % 2 === 0 ? 'left' : 'right'} key={m.id}>
+                            <TeamCard m={m} />
+                        </StaggerItem>
                     ))}
-                </div>
+                </StaggerGroup>
 
                 {/* Bottom CTA */}
-                <div className="mt-10 flex flex-col sm:flex-row items-center justify-between gap-5 pt-6 border-t border-slate-100">
+                <Reveal direction="up" className="mt-14 flex flex-col sm:flex-row items-center justify-between gap-5 pt-8 border-t border-slate-100">
                     <p className="text-base font-semibold text-slate-700 text-center sm:text-left">
                         Passionate about content &amp; research?{' '}
-                        <span className="text-slate-400 font-normal">We'd love to have you.</span>
+                        <span className="text-slate-400 font-normal">We'd love to have you on the team.</span>
                     </p>
                     <Link
                         to="/membership/volunteer-form"
@@ -241,7 +308,7 @@ export default function Authors() {
                         Join Our Team
                         <ArrowRight size={14} strokeWidth={2.5} />
                     </Link>
-                </div>
+                </Reveal>
 
             </div>
         </section>

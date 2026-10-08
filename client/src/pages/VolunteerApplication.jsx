@@ -40,6 +40,7 @@ function useDebounce(value, delay = 400) {
 }
 
 /* ─── Sub-components ───────────────────────────────────────────────────── */
+import { Reveal } from "../components/motion/Reveal";
 function SectionHeader({ icon, number, title }) {
     return (
         <div className="flex items-center gap-3 border-b border-gray-200 pb-3 mb-5">
@@ -60,7 +61,7 @@ function SectionHeader({ icon, number, title }) {
 function SuccessScreen({ onReset }) {
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md p-10 text-center">
+            <Reveal direction="scale" className="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md p-10 text-center">
                 <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <span className="text-4xl">✅</span>
                 </div>
@@ -79,7 +80,7 @@ function SuccessScreen({ onReset }) {
                 >
                     Submit another application
                 </button>
-            </div>
+            </Reveal>
         </div>
     );
 }
@@ -411,7 +412,7 @@ const VolunteerForm = ({ onLogout }) => {
             <div className="max-w-6xl mx-auto px-4 py-6 gap-6 space-y-5">
 
                 {/* ── Header ── */}
-                <div className="relative overflow-hidden bg-gradient-to-r from-(--primary) to-(--primary)/80 rounded-2xl shadow-lg p-6 text-white">
+                <Reveal direction="up" delay={0.0} className="relative overflow-hidden bg-gradient-to-r from-(--primary) to-(--primary)/80 rounded-2xl shadow-lg p-6 text-white">
                     {/* Decorative blobs */}
                     <div className="absolute -top-6 -right-6 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
                     <div className="absolute bottom-0 left-20 w-24 h-24 bg-white/5 rounded-full blur-xl pointer-events-none" />
@@ -425,10 +426,10 @@ const VolunteerForm = ({ onLogout }) => {
                             <p className="text-white/70 text-sm mt-0.5">Join us and make a difference in the community</p>
                         </div>
                     </div>
-                </div>
+                </Reveal>
 
                 {/* ── Section 1: User Details ── */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <Reveal direction="up" delay={0.0} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <SectionHeader icon={<Home size={18} />} number="1" title="Auto-Filled User Details" />
 
                     {profileLoading ? (
@@ -554,10 +555,10 @@ const VolunteerForm = ({ onLogout }) => {
                             </Select>
                         </div>
                     )}
-                </div>
+                </Reveal>
 
                 {/* ── Section 2: Dignitary ── */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <Reveal direction="up" delay={0.05} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <SectionHeader icon={<Building size={20} />} number="2" title="Dignitary" />
 
                     <div className="bg-violet-50 border border-violet-200 rounded-lg px-4 py-2.5 mb-5 flex gap-2 items-start">
@@ -598,10 +599,10 @@ const VolunteerForm = ({ onLogout }) => {
                             </>
                         )}
                     </div>
-                </div>
+                </Reveal>
 
                 {/* ── Section 3: Role & Responsibilities ── */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <Reveal direction="up" delay={0.1} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <SectionHeader icon={<Target size={20} />} number="3" title="Role & Responsibilities" />
                     <div className="space-y-4">
                         <Select
@@ -624,10 +625,10 @@ const VolunteerForm = ({ onLogout }) => {
                             placeholder="e.g. Teaching, Event Management, Social Media Handling etc."
                         />
                     </div>
-                </div>
+                </Reveal>
 
                 {/* ── Section 4: Contribution ── */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <Reveal direction="up" delay={0.15} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <SectionHeader icon={<Handshake size={20} />} number="4" title="How Will You Contribute?" />
                     <Textarea
                         label="Write how you can contribute to our organization and the community"
@@ -637,10 +638,10 @@ const VolunteerForm = ({ onLogout }) => {
                         onChange={(e) => setField("contribution", e.target.value)}
                         placeholder="Share your skills, experience and how you can help us achieve our mission..."
                     />
-                </div>
+                </Reveal>
 
                 {/* ── Section 5: Documents ── */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <Reveal direction="up" delay={0.2} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <SectionHeader icon={<File size={20} />} number="5" title="Additional Documents / Photos" />
                     <div>
                         <Label>Upload Documents / Photos</Label>
@@ -690,10 +691,10 @@ const VolunteerForm = ({ onLogout }) => {
                             </div>
                         )}
                     </div>
-                </div>
+                </Reveal>
 
                 {/* ── Submit ── */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                <Reveal direction="up" delay={0.25} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
                     <button
                         onClick={handleSubmit}
                         disabled={isSubmitting}
@@ -710,7 +711,7 @@ const VolunteerForm = ({ onLogout }) => {
                     <p className="text-center text-xs text-gray-400 mt-3 flex items-center justify-center gap-1">
                         <span>🔒</span> You can edit all the details before submitting the form.
                     </p>
-                </div>
+                </Reveal>
             </div>
         </div>
     );

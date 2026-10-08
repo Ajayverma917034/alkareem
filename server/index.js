@@ -33,11 +33,10 @@ app.use(
 app.use(
     cors({
         origin: [
-            process.env.FRONTEND_URL,
-            process.env.FRONTEND_URL_PROD,
-            process.env.FRONTEND_URL_PROD2,
-            process.env.ADMIN_URL,
-            process.env.EMPLOYEE_URL,
+            process.env.FRONTEND_URL1,
+            process.env.FRONTEND_URL_2,
+            process.env.ADMIN_URL1,
+            process.env.ADMIN_URL2,
         ],
         credentials: true,
     })

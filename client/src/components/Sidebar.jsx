@@ -3,6 +3,7 @@ import { Link, Navigate, Outlet, useLocation } from 'react-router-dom';
 import { Menu, X, Gift, Users, Award, User, LogOut, Loader2, ChevronsRight } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 const Sidebar = () => {
 
@@ -80,39 +81,57 @@ const Sidebar = () => {
             >
                 <div className="flex flex-col h-full">
                     {/* Navigation Menu */}
-                    <nav className="flex-1 px-4 py-4 space-y-2 overflow-y-auto">
+                    <motion.nav
+                        className="flex-1 px-4 py-4 space-y-2 overflow-y-auto"
+                        initial="hidden"
+                        animate="visible"
+                        variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.06 } } }}
+                    >
                         {menuItems.map((item) => {
                             const Icon = item.icon;
                             const active = isActive(item.path);
 
                             return (
-                                <Link
+                                <motion.div
                                     key={item.path}
-                                    to={item.path}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className={`
+                                    variants={{
+                                        hidden: { opacity: 0, x: -16 },
+                                        visible: { opacity: 1, x: 0, transition: { duration: 0.35, ease: [0.22, 1, 0.36, 1] } }
+                                    }}
+                                >
+                                    <Link
+                                        to={item.path}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className={`
                     flex items-center gap-3 px-4 py-2.5 rounded-lg
                     transition-all duration-200
                     ${active
-                                            ? 'bg-blue-50 text-blue-600 font-medium shadow-sm'
-                                            : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
-                                        }
+                                                ? 'bg-blue-50 text-blue-600 font-medium shadow-sm'
+                                                : 'text-gray-600 hover:bg-gray-100 hover:text-gray-900'
+                                            }
                   `}
-                                >
-                                    <Icon className={`w-5 h-5 ${active ? 'text-blue-600' : 'text-gray-500'}`} />
-                                    <span>{item.label}</span>
-                                </Link>
+                                    >
+                                        <Icon className={`w-5 h-5 ${active ? 'text-blue-600' : 'text-gray-500'}`} />
+                                        <span>{item.label}</span>
+                                    </Link>
+                                </motion.div>
                             );
                         })}
-                    </nav>
+                    </motion.nav>
                 </div>
             </aside>
 
             {/* Main Content Area */}
             <main className="flex-1 overflow-y-auto lg:ml-0">
-                <div className="p-4 lg:p-8 pt-16 lg:pt-8">
+                <motion.div
+                    className="p-4 lg:p-8 pt-16 lg:pt-8"
+                    initial={{ opacity: 0, y: 12 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                    key={location.pathname}
+                >
                     <Outlet />
-                </div>
+                </motion.div>
             </main>
         </div>
     );

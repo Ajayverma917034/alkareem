@@ -3,6 +3,7 @@ import { Heart, Calendar, IndianRupee, Search, X, CreditCard, User, Mail, Phone,
 import api from '../api/axiosInstance';
 import { useAuth } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import { Reveal, StaggerGroup, StaggerItem } from '../components/motion/Reveal';
 
 export default function MyDonations() {
     const { user } = useAuth();
@@ -237,14 +238,14 @@ export default function MyDonations() {
             )}
 
             {/* Header */}
-            <div className="mb-4">
+            <Reveal direction="up" className="mb-4">
                 <h1 className="text-xl lg:text-2xl font-bold text-gray-900">My Donations</h1>
                 <p className="text-gray-600 text-sm">Track all your contributions and make a difference</p>
-            </div>
+            </Reveal>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
-                <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <StaggerGroup as="div" amount={0.4} className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-4">
+                <StaggerItem as="div" direction="left" className="bg-white rounded-2xl border border-gray-200 p-6">
                     <div className="flex items-center gap-3 mb-2">
                         <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
                             <IndianRupee className="w-6 h-6 text-blue-600" />
@@ -254,9 +255,9 @@ export default function MyDonations() {
                             <p className="text-2xl font-bold text-gray-900">{formatAmount(totalDonated)}</p>
                         </div>
                     </div>
-                </div>
+                </StaggerItem>
 
-                <div className="bg-white rounded-2xl border border-gray-200 p-6">
+                <StaggerItem as="div" direction="right" className="bg-white rounded-2xl border border-gray-200 p-6">
                     <div className="flex items-center gap-3 mb-2">
                         <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center">
                             <Heart className="w-6 h-6 text-teal-600" />
@@ -266,13 +267,13 @@ export default function MyDonations() {
                             <p className="text-2xl font-bold text-gray-900">{donations.length}</p>
                         </div>
                     </div>
-                </div>
+                </StaggerItem>
 
 
-            </div>
+            </StaggerGroup>
 
             {/* Donations List */}
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <Reveal direction="up" delay={0.1} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 {loading ? (
                     <div className="p-12 text-center">
                         <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4" />
@@ -343,10 +344,10 @@ export default function MyDonations() {
                         </table>
                     </div>
                 )}
-            </div>
+            </Reveal>
 
             {/* Make New Donation CTA */}
-            <div className="mt-8 bg-gradient-to-r from-(--primary) to-blue-500 rounded-2xl shadow-lg p-8 text-white">
+            <Reveal direction="up" className="mt-8 bg-gradient-to-r from-(--primary) to-blue-500 rounded-2xl shadow-lg p-8 text-white">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                     <div>
                         <h3 className="text-2xl font-bold mb-2">Continue Making a Difference</h3>
@@ -356,7 +357,7 @@ export default function MyDonations() {
                         Donate Now
                     </Link>
                 </div>
-            </div>
+            </Reveal>
         </div>
     );
 }

@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import api from '../api/axiosInstance';
 import { Link } from 'react-router-dom';
+import { Reveal, StaggerGroup, StaggerItem } from '../components/motion/Reveal';
 
 export default function Dignitaries() {
     const [dignitaries, setDignitaries] = useState([]);
@@ -301,14 +302,14 @@ export default function Dignitaries() {
             )}
 
             {/* Header */}
-            <div className="mb-4">
+            <Reveal direction="up" className="mb-4">
                 <h1 className="text-xl lg:text-2xl font-bold text-gray-900">My Dignitary Applications</h1>
                 <p className="text-gray-600 text-sm">Track your dignitary applications and their status</p>
-            </div>
+            </Reveal>
 
             {/* Stats Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-6 mb-4">
-                <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6">
+            <StaggerGroup as="div" amount={0.4} className="grid grid-cols-1 md:grid-cols-3 gap-2 sm:gap-6 mb-4">
+                <StaggerItem as="div" direction="up" className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6">
                     <div className="flex items-center gap-3 sm:mb-2">
                         <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
                             <ClipboardList className="w-6 h-6 text-blue-600" />
@@ -318,9 +319,9 @@ export default function Dignitaries() {
                             <p className="text-2xl font-bold text-gray-900">{dignitaries.length}</p>
                         </div>
                     </div>
-                </div>
+                </StaggerItem>
 
-                <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6">
+                <StaggerItem as="div" direction="up" className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6">
                     <div className="flex items-center gap-3 sm:mb-2">
                         <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center">
                             <BadgeCheck className="w-6 h-6 text-teal-600" />
@@ -330,9 +331,9 @@ export default function Dignitaries() {
                             <p className="text-2xl font-bold text-gray-900">{approvedCount}</p>
                         </div>
                     </div>
-                </div>
+                </StaggerItem>
 
-                <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6">
+                <StaggerItem as="div" direction="up" className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6">
                     <div className="flex items-center gap-3 sm:mb-2">
                         <div className="w-12 h-12 rounded-full bg-yellow-100 flex items-center justify-center">
                             <Calendar className="w-6 h-6 text-yellow-600" />
@@ -342,11 +343,11 @@ export default function Dignitaries() {
                             <p className="text-2xl font-bold text-gray-900">{pendingCount}</p>
                         </div>
                     </div>
-                </div>
-            </div>
+                </StaggerItem>
+            </StaggerGroup>
 
             {/* Dignitaries List */}
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <Reveal direction="up" delay={0.1} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 {loading ? (
                     <div className="p-12 text-center">
                         <div className="w-10 h-10 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4" />
@@ -423,10 +424,10 @@ export default function Dignitaries() {
                         </div>
                     </>
                 )}
-            </div>
+            </Reveal>
 
             {/* CTA */}
-            <div className="mt-4 bg-gradient-to-r from-(--primary) to-blue-500 rounded-2xl shadow-sm sm:shadow-lg p-4 sm:p-8 text-white">
+            <Reveal direction="up" className="mt-4 bg-gradient-to-r from-(--primary) to-blue-500 rounded-2xl shadow-sm sm:shadow-lg p-4 sm:p-8 text-white">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                     <div>
                         <h3 className="text-xl sm:text-2xl font-bold sm:mb-2">Want to Apply Again?</h3>
@@ -439,7 +440,7 @@ export default function Dignitaries() {
                         Apply Now
                     </Link>
                 </div>
-            </div>
+            </Reveal>
         </div>
     );
 }

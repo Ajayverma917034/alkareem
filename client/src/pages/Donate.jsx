@@ -3,6 +3,7 @@ import { Heart, CreditCard, Building2, Upload, X, FileText, Image, CheckCircle2 
 import { toast } from "sonner";
 import api from "../api/axiosInstance";
 import { Input, Select, Textarea } from "../components/FormFields";
+import { Reveal } from "../components/motion/Reveal";
 
 function loadRazorpay() {
     return new Promise((resolve) => {
@@ -28,7 +29,7 @@ const INITIAL_FORM = {
 function SuccessScreen({ donorName, onReset }) {
     return (
         <div className="min-h-screen bg-slate-100 px-4 py-14 flex items-center justify-center">
-            <div className="max-w-lg w-full text-center">
+            <Reveal direction="scale" className="max-w-lg w-full text-center">
                 {/* Animated checkmark */}
                 <div className="relative w-28 h-28 mx-auto mb-8">
                     <div className="absolute inset-0 rounded-full bg-green-100 animate-ping opacity-30" />
@@ -63,7 +64,7 @@ function SuccessScreen({ donorName, onReset }) {
                 >
                     Make Another Donation
                 </button>
-            </div>
+            </Reveal>
         </div>
     );
 }
@@ -329,7 +330,7 @@ export default function Donate() {
             <div className="max-w-4xl mx-auto">
 
                 {/* Header */}
-                <div className="text-center mb-10">
+                <Reveal direction="up" className="text-center mb-10">
                     <div className="size-10 sm:size-16 mx-auto rounded-full bg-red-50 flex items-center justify-center mb-4">
                         <Heart className="text-red-500 w-8 h-8" />
                     </div>
@@ -339,10 +340,10 @@ export default function Donate() {
                     <p className="text-gray-500 mt-1 sm:mt-3">
                         Every contribution helps us create real impact.
                     </p>
-                </div>
+                </Reveal>
 
                 {/* Card */}
-                <div className="bg-white rounded-3xl shadow-xl border border-gray-100 p-5 py-8 md:p-10">
+                <Reveal direction="up" delay={0.15} className="bg-white rounded-3xl shadow-xl border border-gray-100 p-5 py-8 md:p-10">
 
                     {/* Mode toggle */}
                     <div className="flex justify-center mb-6 sm:mb-8">
@@ -470,7 +471,7 @@ export default function Donate() {
                                 ? "Proceed to Pay"
                                 : "Submit Donation"}
                     </button>
-                </div>
+                </Reveal>
 
                 {/* Footer */}
                 <p className="text-center text-sm text-gray-500 mt-8">

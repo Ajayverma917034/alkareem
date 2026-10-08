@@ -8,6 +8,7 @@ import {
 import api from '../api/axiosInstance';
 import { Link } from 'react-router-dom';
 import { toast } from 'sonner';
+import { Reveal, StaggerGroup, StaggerItem } from '../components/motion/Reveal';
 
 /* ─── helpers ─────────────────────────────────────────────────────────── */
 const formatDate = (d) =>
@@ -417,14 +418,14 @@ export default function MySubscriptions() {
             )}
 
             {/* Header */}
-            <div className="mb-4">
+            <Reveal direction="up" className="mb-4">
                 <h1 className="text-xl lg:text-2xl font-bold text-gray-900">My Subscriptions</h1>
                 <p className="text-gray-600 text-sm">Manage your membership plans</p>
-            </div>
+            </Reveal>
 
             {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-6 mb-4">
-                <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6">
+            <StaggerGroup as="div" amount={0.4} className="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-6 mb-4">
+                <StaggerItem as="div" direction="left" className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6">
                     <div className="flex items-center gap-3">
                         <div className="w-12 h-12 rounded-full bg-blue-100 flex items-center justify-center">
                             <Crown className="w-6 h-6 text-blue-600" />
@@ -439,9 +440,9 @@ export default function MySubscriptions() {
                             )}
                         </div>
                     </div>
-                </div>
+                </StaggerItem>
 
-                <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6">
+                <StaggerItem as="div" direction="right" className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6">
                     <div className="flex items-center gap-3">
                         <div className="w-12 h-12 rounded-full bg-teal-100 flex items-center justify-center">
                             <Shield className="w-6 h-6 text-teal-600" />
@@ -456,8 +457,8 @@ export default function MySubscriptions() {
                             )}
                         </div>
                     </div>
-                </div>
-            </div>
+                </StaggerItem>
+            </StaggerGroup>
 
             {/* Loading */}
             {loading ? (
@@ -482,16 +483,17 @@ export default function MySubscriptions() {
                             <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
                                 Current Subscription
                             </h2>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {[...active].map(s => (
-                                    <SubscriptionCard
-                                        key={s._id}
-                                        sub={s}
-                                        onView={setViewSub}
-                                        onCancel={setCancelSub}
-                                    />
+                            <StaggerGroup as="div" amount={0.3} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {[...active].map((s, i) => (
+                                    <StaggerItem as="div" direction={i % 2 === 0 ? 'left' : 'right'} key={s._id}>
+                                        <SubscriptionCard
+                                            sub={s}
+                                            onView={setViewSub}
+                                            onCancel={setCancelSub}
+                                        />
+                                    </StaggerItem>
                                 ))}
-                            </div>
+                            </StaggerGroup>
                         </div>
                     )}
 
@@ -501,7 +503,7 @@ export default function MySubscriptions() {
                             <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3">
                                 Past Subscriptions
                             </h2>
-                            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+                            <Reveal direction="up" className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
 
                                 {/* Desktop Table */}
                                 <div className="hidden md:block overflow-x-auto">
@@ -550,14 +552,15 @@ export default function MySubscriptions() {
                                     ))}
                                 </div>
 
-                            </div>
+                            </Reveal>
+
                         </div>
                     )}
                 </>
             )}
 
             {/* CTA */}
-            <div className="mt-4 bg-gradient-to-r from-(--primary) to-blue-500 rounded-2xl shadow-sm sm:shadow-lg p-4 sm:p-8 text-white">
+            <Reveal direction="up" className="mt-4 bg-gradient-to-r from-(--primary) to-blue-500 rounded-2xl shadow-sm sm:shadow-lg p-4 sm:p-8 text-white">
                 <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                     <div>
                         <h3 className="text-xl sm:text-2xl font-bold sm:mb-2">
@@ -572,7 +575,7 @@ export default function MySubscriptions() {
                         {activeSub ? "View Plans" : "Subscribe Now"}
                     </Link>
                 </div>
-            </div>
+            </Reveal>
         </div>
     );
 }

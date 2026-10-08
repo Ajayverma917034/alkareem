@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import { Mail, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Reveal, StaggerGroup, StaggerItem } from '../motion/Reveal';
 
 const team = [
     {
@@ -111,21 +112,23 @@ export default function MeetOurTeam() {
             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header */}
-                <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-3">
+                <Reveal direction="up" className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-3">
                     <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-[1.1] mb-4">
                         Meet Our Team
                     </h2>
-                </div>
+                </Reveal>
 
                 {/* Grid */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-5 sm:gap-y-12">
-                    {team.map(m => (
-                        <TeamCard key={m.id} m={m} />
+                <StaggerGroup as="div" amount={0.1} className="grid grid-cols-2 lg:grid-cols-4 gap-x-4 sm:gap-x-6 gap-y-5 sm:gap-y-12">
+                    {team.map((m, i) => (
+                        <StaggerItem as="div" direction={i % 2 === 0 ? 'left' : 'right'} key={m.id}>
+                            <TeamCard m={m} />
+                        </StaggerItem>
                     ))}
-                </div>
+                </StaggerGroup>
 
                 {/* Bottom CTA */}
-                <div className="mt-6 sm:mt-10 flex flex-col sm:flex-row items-center justify-between gap-5 pt-6 border-t border-slate-100">
+                <Reveal direction="up" className="mt-6 sm:mt-10 flex flex-col sm:flex-row items-center justify-between gap-5 pt-6 border-t border-slate-100">
                     <p className="text-base font-semibold text-slate-700 text-center sm:text-left">
                         Passionate about change?{' '}
                         <span className="text-slate-400 font-normal">We'd love to have you.</span>
@@ -143,7 +146,7 @@ export default function MeetOurTeam() {
                         Become a Volunteer
                         <ArrowRight size={14} strokeWidth={2.5} />
                     </Link>
-                </div>
+                </Reveal>
 
             </div>
         </section>

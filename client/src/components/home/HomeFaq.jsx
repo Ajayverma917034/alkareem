@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
+import { Reveal, StaggerGroup, StaggerItem } from '../motion/Reveal';
 
 const faqs = [
     {
@@ -69,26 +70,27 @@ export default function FAQ() {
             <div className="max-w-[860px] mx-auto px-4 sm:px-6 lg:px-8">
 
                 {/* Header */}
-                <div className="text-center mb-12">
+                <Reveal direction="up" className="text-center mb-12">
                     <h5 className="text-3xl sm:text-4xl lg:text-4xl font-bold text-slate-900 leading-tight mb-2">
                         Frequently Asked Questions
                     </h5>
                     <p className="text-sm sm:text-base text-slate-400 font-medium">
                         Everything you need to know about donations and our mission.
                     </p>
-                </div>
+                </Reveal>
 
                 {/* FAQ list */}
-                <div className="flex flex-col gap-3">
+                <StaggerGroup as="div" className="flex flex-col gap-3">
                     {faqs.map(faq => (
-                        <FAQItem
-                            key={faq.id}
-                            faq={faq}
-                            isOpen={openId === faq.id}
-                            onToggle={() => toggle(faq.id)}
-                        />
+                        <StaggerItem as="div" direction="up" key={faq.id}>
+                            <FAQItem
+                                faq={faq}
+                                isOpen={openId === faq.id}
+                                onToggle={() => toggle(faq.id)}
+                            />
+                        </StaggerItem>
                     ))}
-                </div>
+                </StaggerGroup>
 
             </div>
         </section>

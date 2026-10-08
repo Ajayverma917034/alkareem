@@ -8,6 +8,7 @@ import {
     Settings,
     ChevronDown
 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export default function ProfileMenu({ user }) {
     const [isOpen, setIsOpen] = useState(false);
@@ -86,10 +87,15 @@ export default function ProfileMenu({ user }) {
             </button>
 
             {/* Dropdown Menu */}
-            <div
-                className={`absolute right-0 mt-2 w-50 sm:w-72 z-[100] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden transition-all duration-200 origin-top-right
-                    ${isOpen ? 'opacity-100 visible scale-100' : 'opacity-0 invisible scale-95'}`}
-            >
+            <AnimatePresence>
+                {isOpen && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -8, scale: 0.95 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        exit={{ opacity: 0, y: -8, scale: 0.95 }}
+                        transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
+                        className="absolute right-0 mt-2 w-50 sm:w-72 z-[100] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden origin-top-right"
+                    >
                 {/* User Info Section */}
                 <div className="px-2 sm:px-4 py-1.5 sm:py-2 bg-gradient-to-br from-blue-50 to-indigo-50 border-b border-gray-100">
                     <div className="flex items-start gap-3">
@@ -165,7 +171,9 @@ export default function ProfileMenu({ user }) {
                         </div>
                     </button>
                 </div>
-            </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </div>
     );
 }

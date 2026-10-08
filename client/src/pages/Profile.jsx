@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { Country, State, City } from 'country-state-city';
 import api from '../api/axiosInstance';
 import { useAuth } from '../context/AuthContext';
+import { Reveal } from '../components/motion/Reveal';
 
 const GENDER_OPTIONS = ["Male", "Female", "Other", "Prefer not to say"];
 
@@ -259,7 +260,7 @@ export default function Profile() {
         <div className="max-w-7xl mx-auto space-y-5 pb-10">
 
             {/* ── Hero ──────────────────────────────────────────────────────── */}
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+            <Reveal direction="up" className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
                 <div className="px-6 py-6">
                     <div className="flex flex-col sm:flex-row sm:items-end gap-4">
 
@@ -325,9 +326,10 @@ export default function Profile() {
                         </div>
                     </div>
                 </div>
-            </div>
+            </Reveal>
 
             {/* ── Personal Information ──────────────────────────────────────── */}
+            <Reveal direction="up" delay={0.08}>
             <Section title="Personal Information" icon={User}>
                 {isEditing ? (
                     <>
@@ -363,8 +365,10 @@ export default function Profile() {
                     </>
                 )}
             </Section>
+            </Reveal>
 
             {/* ── Address ──────────────────────────────────────────────────── */}
+            <Reveal direction="up" delay={0.14}>
             <Section title="Address" icon={MapPin}>
                 {isEditing ? (
                     <>
@@ -400,9 +404,10 @@ export default function Profile() {
                     </>
                 )}
             </Section>
+            </Reveal>
 
             {/* ── Account (always read-only) ────────────────────────────────── */}
-            <div className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
+            <Reveal direction="up" delay={0.2} className="bg-white rounded-2xl border border-gray-200 overflow-hidden">
                 <div className="flex items-center gap-2 px-6 py-4 border-b border-gray-100">
                     <div className="w-8 h-8 rounded-lg bg-blue-50 flex items-center justify-center">
                         <Shield className="w-4 h-4 text-blue-600" />
@@ -431,7 +436,7 @@ export default function Profile() {
                         </p>
                     </div>
                 </div>
-            </div>
+            </Reveal>
 
         </div>
     );

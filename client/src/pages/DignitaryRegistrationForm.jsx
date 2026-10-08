@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { Building, File, User, Shield, Loader2, MapPin } from "lucide-react";
 import { Input, Label, Select, Textarea } from "../components/FormFields";
+import { Reveal } from "../components/motion/Reveal";
 import { Country, State, City } from "country-state-city";
 import { toast } from "sonner";
 import api from "../api/axiosInstance";
@@ -56,7 +57,7 @@ function SectionHeader({ icon, number, title, subtitle, color = "emerald" }) {
 function SuccessScreen({ onReset, dignitaryId }) {
     return (
         <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-white to-teal-50 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md p-10 text-center">
+            <Reveal direction="scale" className="bg-white rounded-2xl shadow-xl border border-gray-100 w-full max-w-md p-10 text-center">
                 <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
                     <span className="text-4xl">✅</span>
                 </div>
@@ -75,7 +76,7 @@ function SuccessScreen({ onReset, dignitaryId }) {
                 >
                     Submit another registration
                 </button>
-            </div>
+            </Reveal>
         </div>
     );
 }
@@ -255,7 +256,7 @@ const DignitaryRegistrationForm = ({ onLogout }) => {
             <div className="max-w-6xl mx-auto px-4 py-6 space-y-5">
 
                 {/* ── Header ── */}
-                <div className="relative overflow-hidden bg-gradient-to-r from-(--primary) to-(--primary)/80 rounded-2xl shadow-lg p-6 text-white">
+                <Reveal direction="up" className="relative overflow-hidden bg-gradient-to-r from-(--primary) to-(--primary)/80 rounded-2xl shadow-lg p-6 text-white">
                     <div className="absolute -top-6 -right-6 w-32 h-32 bg-white/10 rounded-full blur-2xl pointer-events-none" />
                     <div className="absolute bottom-0 left-20 w-24 h-24 bg-white/5 rounded-full blur-xl pointer-events-none" />
                     <div className="relative flex items-center gap-4">
@@ -267,10 +268,10 @@ const DignitaryRegistrationForm = ({ onLogout }) => {
                             <p className="text-white/70 text-sm mt-0.5">For Dignitary / Organization / Religious Places</p>
                         </div>
                     </div>
-                </div>
+                </Reveal>
 
                 {/* ── Section 1: Personal Details ── */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <Reveal direction="up" delay={0.0} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <SectionHeader
                         icon={<User size={18} />}
                         number="1"
@@ -375,10 +376,10 @@ const DignitaryRegistrationForm = ({ onLogout }) => {
                             </Select>
                         </div>
                     )}
-                </div>
+                </Reveal>
 
                 {/* ── Section 2: Dignitary / Org Details ── */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <Reveal direction="up" delay={0.05} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <SectionHeader
                         icon={<Building size={20} />}
                         number="2"
@@ -482,10 +483,10 @@ const DignitaryRegistrationForm = ({ onLogout }) => {
                             placeholder="Enter pin code"
                         />
                     </div>
-                </div>
+                </Reveal>
 
                 {/* ── Section 3: Role / Position ── */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <Reveal direction="up" delay={0.1} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <SectionHeader
                         icon={<Shield size={20} />}
                         number="3"
@@ -504,10 +505,10 @@ const DignitaryRegistrationForm = ({ onLogout }) => {
                             Examples: Masjid, Mandir, Church, Gurudwara, Temple, Ashram, Trust, NGO, School, Society, Other
                         </p>
                     </div>
-                </div>
+                </Reveal>
 
                 {/* ── Section 4: Documents ── */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <Reveal direction="up" delay={0.15} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <SectionHeader
                         icon={<File size={20} />}
                         number="4"
@@ -577,10 +578,10 @@ const DignitaryRegistrationForm = ({ onLogout }) => {
                             </div>
                         )}
                     </div>
-                </div>
+                </Reveal>
 
                 {/* ── Section 5: Declaration ── */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
+                <Reveal direction="up" delay={0.2} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-6">
                     <SectionHeader
                         icon={<Shield size={20} />}
                         number="5"
@@ -600,10 +601,10 @@ const DignitaryRegistrationForm = ({ onLogout }) => {
                             I agree to abide by the rules and policies of Alkareem TARBIYAT Education and Welfare Trust.
                         </label>
                     </div>
-                </div>
+                </Reveal>
 
                 {/* ── Submit ── */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
+                <Reveal direction="up" delay={0.25} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-5">
                     <button
                         onClick={handleSubmit}
                         disabled={isSubmitting || !isDeclared}
@@ -621,7 +622,7 @@ const DignitaryRegistrationForm = ({ onLogout }) => {
                     <p className="text-center text-xs text-gray-400 mt-3 flex items-center justify-center gap-1">
                         <span>🔒</span> You can edit all the details before submitting the form.
                     </p>
-                </div>
+                </Reveal>
             </div>
         </div>
     );

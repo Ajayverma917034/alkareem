@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { Send, User, Mail, Phone, BookOpen, MessageSquare, ChevronDown, CheckCircle } from 'lucide-react';
 import api from '../api/axiosInstance';
+import { Reveal } from '../components/motion/Reveal';
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -143,7 +144,7 @@ export default function Contact() {
     if (submitted) {
         return (
             <div className="min-h-[calc(100vh-150px)] flex items-center justify-center bg-white px-4 py-10">
-                <div className="w-full max-w-md bg-white rounded-xl border border-gray-200 shadow-xl px-6 sm:px-10 py-14 flex flex-col items-center text-center gap-5">
+                <Reveal direction="scale" className="w-full max-w-md bg-white rounded-xl border border-gray-200 shadow-xl px-6 sm:px-10 py-14 flex flex-col items-center text-center gap-5">
                     <div className="w-16 h-16 rounded-full bg-emerald-50 flex items-center justify-center">
                         <CheckCircle className="w-8 h-8 text-emerald-500" />
                     </div>
@@ -160,7 +161,7 @@ export default function Contact() {
                     >
                         Send another message
                     </button>
-                </div>
+                </Reveal>
             </div>
         );
     }
@@ -172,17 +173,17 @@ export default function Contact() {
             <div className="w-full max-w-2xl">
 
                 {/* Page header */}
-                <div className="mb-8 text-center">
+                <Reveal direction="up" className="mb-8 text-center">
                     <img src="/logo.png" className="w-20 h-fit mx-auto mb-5" alt="Logo" />
                     <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">Get in Touch</h1>
                     <p className="text-sm text-gray-500 max-w-sm mx-auto leading-relaxed">
                         Have a question or want to get involved? Fill out the form below
                         and we'll respond as soon as possible.
                     </p>
-                </div>
+                </Reveal>
 
                 {/* Card */}
-                <div className="bg-white rounded-xl border border-gray-200 shadow-xl px-5 sm:px-10 py-8 sm:py-10">
+                <Reveal direction="up" delay={0.15} className="bg-white rounded-xl border border-gray-200 shadow-xl px-5 sm:px-10 py-8 sm:py-10">
                     <form onSubmit={handleSubmit} className="space-y-5" noValidate>
 
                         {/* Row 1 — Name + Phone */}
@@ -346,7 +347,7 @@ export default function Contact() {
                         </p>
 
                     </form>
-                </div>
+                </Reveal>
 
             </div>
         </div>

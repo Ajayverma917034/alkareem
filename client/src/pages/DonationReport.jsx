@@ -4,6 +4,7 @@ import {
     RefreshCw, CheckCircle2, Wallet, Filter, X
 } from "lucide-react";
 import api from "../api/axiosInstance";
+import { Reveal, StaggerGroup, StaggerItem } from "../components/motion/Reveal";
 
 /* ─── helpers ─────────────────────────────────────── */
 const fmt = (n) =>
@@ -347,7 +348,7 @@ export default function DonationSummary() {
             <div className="max-w-7xl mx-auto px-3 sm:px-6 py-8 sm:py-12 space-y-6">
 
                 {/* ── header ── */}
-                <div className="text-center mb-8">
+                <Reveal direction="up" className="text-center mb-8">
                     <h1 className="text-3xl sm:text-4xl font-bold text-gray-800 flex items-center justify-center gap-3">
                         <Wallet className="text-emerald-600" size={32} />
                         Donation Report
@@ -356,7 +357,7 @@ export default function DonationSummary() {
                         Transparency is our priority. Here is a record of recent and previous donations made to support our initiatives.
                     </p>
 
-                </div>
+                </Reveal>
 
                 {/* ── stat cards grid ── */}
                 {loading ? (
@@ -376,35 +377,41 @@ export default function DonationSummary() {
                     </div>
                 ) : (
                     <>
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <StatCard
+                        <StaggerGroup as="div" amount={0.3} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <StaggerItem as="div" direction="left">
+                                <StatCard
                                 icon={IndianRupee}
                                 label="Total Donations"
                                 value={fmt(stats.totalDonations)}
                                 sub={`${stats.totalDonationsCount} contributions received`}
                                 gradient="from-emerald-500 to-emerald-600"
                                 iconColor="text-emerald-600"
-                            />
-                            <StatCard
+                                />
+                            </StaggerItem>
+                            <StaggerItem as="div" direction="up">
+                                <StatCard
                                 icon={Calendar}
                                 label="Today's Donations"
                                 value={fmt(stats.todayDonations)}
                                 sub={`${stats.todayDonationsCount} donations today`}
                                 gradient="from-blue-500 to-blue-600"
                                 iconColor="text-blue-600"
-                            />
-                            <StatCard
+                                />
+                            </StaggerItem>
+                            <StaggerItem as="div" direction="right">
+                                <StatCard
                                 icon={DollarSign}
                                 label="Total Expenses"
                                 value={fmt(stats.totalExpenses)}
                                 sub={`${stats.totalExpensesCount} expense records`}
                                 gradient="from-orange-500 to-orange-600"
                                 iconColor="text-orange-600"
-                            />
+                                />
+                            </StaggerItem>
 
-                        </div>
+                        </StaggerGroup>
                         {/* Donation List Section */}
-                        <div className="mt-8 space-y-4">
+                        <Reveal direction="up" delay={0.1} className="mt-8 space-y-4">
                             <div className="flex items-center justify-between flex-wrap gap-4">
                                 <h2 className="text-xl font-bold text-gray-800">Recent Donations</h2>
                                 <div className="text-sm text-gray-500">
@@ -436,7 +443,7 @@ export default function DonationSummary() {
                                     />
                                 </>
                             )}
-                        </div>
+                        </Reveal>
                     </>
                 )}
             </div>

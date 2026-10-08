@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import api from "../api/axiosInstance";
 import { Link } from "react-router-dom";
+import { Reveal, StaggerGroup, StaggerItem } from "../components/motion/Reveal";
 
 /* ─────────────────────────────────────────
    API helper
@@ -224,7 +225,7 @@ export default function PublicVolunteers() {
                         backgroundSize: "28px 28px",
                     }}
                 />
-                <div className="relative max-w-4xl mx-auto px-4 pt-20 pb-5 text-center">
+                <Reveal direction="up" className="relative max-w-4xl mx-auto px-4 pt-20 pb-5 text-center">
                     <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight mb-4">
                         Volunteer Membership
                     </h1>
@@ -237,19 +238,19 @@ export default function PublicVolunteers() {
                     >
                         Join Our Team
                     </Link>
-                </div>
+                </Reveal>
 
                 {/* Impact stat cards — overlapping into next section */}
                 <div className="relative max-w-5xl mx-auto px-4">
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3 pb-0 translate-y-1/2">
+                    <StaggerGroup as="div" amount={0.3} className="grid grid-cols-2 md:grid-cols-4 gap-3 pb-0 translate-y-1/2">
                         {IMPACT_STATS.map(({ icon: Icon, value, label }) => (
-                            <div key={label} className="bg-white rounded-2xl shadow-lg p-5 flex flex-col items-center gap-2 border border-gray-100">
+                            <StaggerItem as="div" direction="scale" key={label} className="bg-white rounded-2xl shadow-lg p-5 flex flex-col items-center gap-2 border border-gray-100">
                                 <Icon size={24} className="text-[color:var(--primary)]" strokeWidth={1.5} />
                                 <p className="text-2xl font-bold text-gray-800">{value}</p>
                                 <p className="text-xs text-gray-400 text-center">{label}</p>
-                            </div>
+                            </StaggerItem>
                         ))}
-                    </div>
+                    </StaggerGroup>
                 </div>
             </section>
 
@@ -262,13 +263,13 @@ export default function PublicVolunteers() {
             <section className="max-w-7xl mx-auto px-4 py-10 space-y-5">
 
                 {/* Section heading */}
-                <div className="text-center mb-6">
+                <Reveal direction="up" className="text-center mb-6">
                     <h2 className="text-2xl font-bold text-gray-800">Meet Our Volunteer Heroes</h2>
                     <p className="text-sm text-gray-400 mt-1">Dedicated individuals making a real difference in communities</p>
-                </div>
+                </Reveal>
 
                 {/* Search + Filter */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+                <Reveal direction="up" delay={0.1} className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
                     <div className="flex flex-col sm:flex-row gap-2">
                         <div className="relative flex-1">
                             <Search size={15} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
@@ -290,7 +291,7 @@ export default function PublicVolunteers() {
                             </button>
                         )}
                     </div>
-                </div>
+                </Reveal>
 
                 {/* Error */}
                 {error && (
@@ -301,7 +302,7 @@ export default function PublicVolunteers() {
                 )}
 
                 {/* Table */}
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                <Reveal direction="up" delay={0.15} className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
                     <div className="overflow-x-auto">
                         <table className="w-full text-sm">
                             <thead>
@@ -385,7 +386,7 @@ export default function PublicVolunteers() {
                             </div>
                         </div>
                     )}
-                </div>
+                </Reveal>
             </section>
 
             {/* ══════════════════════════════════════
@@ -393,23 +394,23 @@ export default function PublicVolunteers() {
             ══════════════════════════════════════ */}
             <section className="bg-[#e8f5e9]/60 py-16 px-4">
                 <div className="max-w-5xl mx-auto">
-                    <div className="text-center mb-10">
+                    <Reveal direction="up" className="text-center mb-10">
                         <h2 className="text-2xl font-bold text-gray-800">
                             Why <span className="text-[color:var(--primary)] underline underline-offset-4 decoration-2">Volunteer</span> With Us?
                         </h2>
                         <p className="text-sm text-gray-500 mt-2">Enjoy these amazing benefits while making a positive impact</p>
-                    </div>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                        {BENEFITS.map(({ icon: Icon, title, desc }) => (
-                            <div key={title} className="bg-white rounded-2xl p-6 flex flex-col items-center text-center border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                    </Reveal>
+                    <StaggerGroup as="div" amount={0.15} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {BENEFITS.map(({ icon: Icon, title, desc }, i) => (
+                            <StaggerItem as="div" direction={i % 2 === 0 ? 'left' : 'right'} key={title} className="bg-white rounded-2xl p-6 flex flex-col items-center text-center border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                                 <div className="w-12 h-12 rounded-full flex items-center justify-center bg-emerald-50 mb-4">
                                     <Heart size={22} className="text-emerald-500" strokeWidth={1.5} />
                                 </div>
                                 <h3 className="font-semibold text-gray-800 mb-1">{title}</h3>
                                 <p className="text-xs text-gray-400 leading-relaxed">{desc}</p>
-                            </div>
+                            </StaggerItem>
                         ))}
-                    </div>
+                    </StaggerGroup>
                 </div>
             </section>
 
@@ -417,7 +418,7 @@ export default function PublicVolunteers() {
                 SECTION 4 — CTA BANNER
             ══════════════════════════════════════ */}
             <section className="bg-[#0d3d26] py-16 px-4 text-center">
-                <div className="max-w-2xl mx-auto">
+                <Reveal direction="scale" className="max-w-2xl mx-auto">
                     <h2 className="text-2xl sm:text-3xl font-bold text-white mb-3">
                         Ready to Make a Difference?
                     </h2>
@@ -430,7 +431,7 @@ export default function PublicVolunteers() {
                     >
                         Become a Volunteer Today
                     </Link>
-                </div>
+                </Reveal>
             </section>
 
         </div>

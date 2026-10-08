@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Mail, Phone, MapPin } from 'lucide-react';
+import { Reveal, StaggerGroup, StaggerItem } from './motion/Reveal';
 
 // ── Data ─────────────────────────────────────────────────────────────────────
 
@@ -81,10 +82,10 @@ export default function Footer() {
         <footer style={{ backgroundColor: '#111111' }} className="w-full text-gray-300">
 
             {/* ── Main 4-col grid ── */}
-            <div className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-10">
+            <StaggerGroup as="div" amount={0.1} className="max-w-7xl mx-auto px-6 py-12 grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-10">
 
                 {/* ── Col 1 : Brand ── */}
-                <div className="flex flex-col gap-4 max-sm:col-span-2">
+                <StaggerItem as="div" direction="up" className="flex flex-col gap-4 max-sm:col-span-2">
                     {/* Logo + name */}
                     <div className="flex items-start gap-3">
                         <div className="w-auto h-[80px] bg-white flex-shrink-0 px-2 overflow-hidden flex items-center justify-center">
@@ -131,10 +132,10 @@ export default function Footer() {
                             </a>
                         ))}
                     </div>
-                </div>
+                </StaggerItem>
 
                 {/* ── Col 2 : Quick Links ── */}
-                <div>
+                <StaggerItem as="div" direction="up">
                     <h3 className="text-white font-bold text-[15px] sm:text-lg mb-3">Quick Links</h3>
                     <ul className="space-y-2">
                         {quickLinks.map(({ label, to }) => (
@@ -148,10 +149,10 @@ export default function Footer() {
                             </li>
                         ))}
                     </ul>
-                </div>
+                </StaggerItem>
 
                 {/* ── Col 3 : Our Services ── */}
-                <div>
+                <StaggerItem as="div" direction="up">
                     <h3 className="text-white font-bold text-[15px] sm:text-lg mb-3">Our Services</h3>
                     <ul className="space-y-2.5">
                         {services.map(service => (
@@ -160,10 +161,10 @@ export default function Footer() {
                             </li>
                         ))}
                     </ul>
-                </div>
+                </StaggerItem>
 
                 {/* ── Col 4 : Contact Us ── */}
-                <div className=' max-sm:col-span-2'>
+                <StaggerItem as="div" direction="up" className=' max-sm:col-span-2'>
                     <h3 className="text-white font-bold text-[15px] sm:text-lg mb-3">Contact Us</h3>
                     <ul className="space-y-3">
                         {contactInfo.map(({ icon: Icon, label, text, href }) => (
@@ -182,9 +183,9 @@ export default function Footer() {
                             </li>
                         ))}
                     </ul>
-                </div>
+                </StaggerItem>
 
-            </div>
+            </StaggerGroup>
 
             {/* ── Bottom bar ── */}
             <div style={{ borderTop: '1px solid #222222' }}>

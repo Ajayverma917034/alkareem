@@ -7,6 +7,7 @@ import { ArrowRight, RotateCcw, CheckCircle2, ArrowLeft, ShieldAlert, Loader2 } 
 import { Toaster, toast } from 'sonner';
 import api from '../api/axiosInstance';
 import { useAuth } from '../context/AuthContext';
+import { Reveal } from '../components/motion/Reveal';
 
 // ─── Config ─────────────────────────────────────────────────────────────────
 // Keep this in sync with the backend's OTP_LENGTH (default 6).
@@ -310,7 +311,7 @@ export default function Login() {
             `}</style>
 
             <div className="min-h-[calc(100vh-150px)] flex items-center justify-center bg-white px-4 py-10">
-                <div className="w-full max-w-md bg-white rounded-xl border border-gray-200 shadow-xl px-4 sm:px-10 pb-11 pt-8">
+                <Reveal direction="scale" className="w-full max-w-md bg-white rounded-xl border border-gray-200 shadow-xl px-4 sm:px-10 pb-11 pt-8">
                     <img src="/logo.png" className="w-auto h-20 mx-auto mb-8" alt="" />
 
                     {/* ── STEP 1: Phone ── */}
@@ -440,7 +441,7 @@ export default function Login() {
                             <StepTrack step={step} />
                         </form>
                     )}
-                </div>
+                </Reveal>
             </div>
         </>
     );

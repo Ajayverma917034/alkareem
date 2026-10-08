@@ -7,6 +7,7 @@ import {
     BookOpen, Utensils, Heart, Shield, Leaf, AlertTriangle,
     ChevronLeft, ChevronRight, ArrowUpRight, Minus,
 } from 'lucide-react';
+import { Reveal } from '../motion/Reveal';
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 const services = [
@@ -218,7 +219,7 @@ export default function OurServices() {
             <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 overflow-hidden">
 
                 {/* ── Section Header ── */}
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between sm:gap-6 mb-3">
+                <Reveal direction="up" className="flex flex-col sm:flex-row sm:items-center sm:justify-between sm:gap-6 mb-3">
                     <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 leading-[1.1] sm:mb-4">
                         Our Programs
                     </h2>
@@ -250,9 +251,10 @@ export default function OurServices() {
                             ))}
                         </div>
                     </div>
-                </div>
+                </Reveal>
 
                 {/* ── Swiper carousel ── */}
+                <Reveal direction="scale" delay={0.15}>
                 <Swiper
                     modules={[Navigation, Pagination, Autoplay]}
                     spaceBetween={20}
@@ -289,6 +291,7 @@ export default function OurServices() {
                         </SwiperSlide>
                     ))}
                 </Swiper>
+                </Reveal>
 
             </div>
         </section>

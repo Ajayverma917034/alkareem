@@ -3,6 +3,7 @@ import { CreditCard, Calendar, IndianRupee, X, User, Hash, FileText, CheckCircle
 import api from '../api/axiosInstance';
 import { pdf, PDFViewer } from "@react-pdf/renderer";
 import PaymentPDF from '../components/PaymentPDF';
+import { Reveal } from '../components/motion/Reveal';
 export default function MyPayments() {
     const [payments, setPayments] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -302,13 +303,13 @@ export default function MyPayments() {
             )}
 
             {/* Header */}
-            <div className="mb-6">
+            <Reveal direction="up" className="mb-6">
                 <h1 className="text-xl lg:text-2xl font-bold text-gray-900">Payment History</h1>
                 <p className="text-gray-600 text-sm">View and manage all your transactions</p>
-            </div>
+            </Reveal>
 
             {/* Payments List */}
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <Reveal direction="up" delay={0.1} className="bg-white rounded-xl border border-gray-200 overflow-hidden">
                 {loading ? (
                     <div className="p-12 text-center">
                         <div className="w-10 h-10 border-4 border-purple-200 border-t-purple-600 rounded-full animate-spin mx-auto mb-4" />
@@ -451,7 +452,7 @@ export default function MyPayments() {
                         </div>
                     </>
                 )}
-            </div>
+            </Reveal>
 
         </div>
     );
